@@ -8,8 +8,6 @@ import java.util.UUID;
 
 @Value
 public class WorkFlowStepResult implements Serializable {
-	private static final long serialVersionUID = -7063393164516034871L;
-
 	UUID id;
 	String methodName;
 	Date methodStarted;
