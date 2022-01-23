@@ -1,0 +1,60 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:obj="http://servicecontext.ntpsoa.nordea.com/object" xmlns:v2="http://digitalsigning.ntp.nordea.com/signordereventhandler/service/v2">
+   <soapenv:Header>
+      <obj:serviceContext schemaVersion="?">
+         <obj:userId>?</obj:userId>
+         <obj:technicalUserId>?</obj:technicalUserId>
+         <obj:sessionId>?</obj:sessionId>
+         <obj:requestId>?</obj:requestId>
+         <obj:applicationId>DBFAA</obj:applicationId>
+         <obj:channelId>?</obj:channelId>
+         <obj:clientType>?</obj:clientType>
+         <obj:clientComponent>?</obj:clientComponent>
+         <obj:clientComponentVersion>?</obj:clientComponentVersion>
+         <obj:clientAction>?</obj:clientAction>
+         <obj:clientView>?</obj:clientView>
+         <obj:processInstance>?</obj:processInstance>
+         <obj:authMethod>?</obj:authMethod>
+         <obj:officeMode>?</obj:officeMode>
+         <obj:userLocation>?</obj:userLocation>
+         <obj:requestDomain>SE</obj:requestDomain>
+         <obj:messageTimeStamp>?</obj:messageTimeStamp>
+         <obj:auditCategory>?</obj:auditCategory>
+         <obj:test>false</obj:test>
+         <obj:testParams>
+            <!--Zero or more repetitions:-->
+            <obj:testParam target="?">?</obj:testParam>
+         </obj:testParams>
+         <obj:accountingUnit>ACCUNIT</obj:accountingUnit>
+         <!--You may enter ANY elements at this point-->
+      </obj:serviceContext>
+   </soapenv:Header>
+   <soapenv:Body>
+      <v2:reportEventRequest>
+         <eventOccured>2017-07-14T16:20:31</eventOccured>
+         <eventReported>2017-07-14T16:20:31</eventReported>
+         <documentURI>http://DKNPHV001365.oneadr.net:7501/document/187729642</documentURI>
+         <event>order.employee.signed</event>
+         <!--Optional:-->
+         
+         <!--Optional:-->
+         <recipientList>
+            <!--1 or more repetitions:-->
+            <recipient>
+               <!--You have a CHOICE of the next 2 items at this level-->
+               <!--Optional:-->
+               
+               <!--Optional:-->
+               <nationalPersonId>198712280059</nationalPersonId>
+			   <nationalCompanyId>9697771104</nationalCompanyId>
+			   <name>Smith</name>
+               <!--Optional:-->
+               <countryCode>SE</countryCode>
+               <!--Optional:-->
+               <signingStatus/>
+            </recipient>
+         </recipientList>
+         <!--Optional:-->
+         <sdo>SDOPD94bWwgdmVyc2lvbj0iMS4wI</sdo>
+      </v2:reportEventRequest>
+   </soapenv:Body>
+</soapenv:Envelope>

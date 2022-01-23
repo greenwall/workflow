@@ -1,0 +1,51 @@
+{
+
+    "id" : "10fc0c19-7cf6-4a56-9cad-96c4c784a49b",
+    "eventId" : "100c0c19-7cf6-4a56-9cad-96c4c784a49b",
+    "eventContent": "",
+    "state" :
+  {
+    "userId" : "G97435",  
+    "branchId" : "2427",
+    "country" :  "DK",   
+    "recipients" : [ {
+        "customerNumber" : "4621659761",
+        "customerName" : "Karsten",
+        "nationalId" : "1510711579",
+        "__email__" : "remove underscores and insert e-mail address",
+        "__phoneNumber__" : "remove underscores and insert phonenumber including prefix 0045"
+    } ],
+    "workflowMetadata" :  {
+        "nameValues" : [      
+            { "name" : "name", "value": "document-name" }
+        ]
+    },
+    "target" : "nds",
+    "document" : {
+        "mimeType" : "application/pdf",
+        "convertToPdfA" : false,
+        "signing" : false,
+        "input" : {
+                "documentType" : "OT.17",
+                "xmlContent" : "<overdraft><genericInformation><CustomerId>42</CustomerId><CurrentDate>2016-12-22+01:00</CurrentDate><FormOfAddress>1</FormOfAddress><LoggedInUser><Name>User Name</Name><Phone>004542483807</Phone></LoggedInUser><Reciever><Occupation>Svinehyrde</Occupation><Name>Kim Rasmussen</Name><Address><Street>Konsulentvej 42</Street><ZipTown>4330 Hvalsø æ ø å Æ Ø Å XX æøå ÆØÅ</ZipTown></Address></Reciever><CustomerType>HH</CustomerType><Branch><RegNo>2176</RegNo><Name>Filial</Name><Address><Street>Filial adresse</Street><ZipTown>9999</ZipTown></Address><Contact><PhoneNo>42483807</PhoneNo><FaxNo>42483807</FaxNo></Contact></Branch><Advisor><Name>Rådgiver</Name><Relation>1</Relation><Phone>004542483807</Phone></Advisor></genericInformation><Fee><FeeAmount>99654</FeeAmount><FeeAccount>1234567890</FeeAccount></Fee><AccountsInOverdraft><Account><AccountNumber>1234567890</AccountNumber><Amount>64</Amount><LatestPaymentAmount>19</LatestPaymentAmount><Balance>1</Balance><Is30Days>true</Is30Days><BorrowerInterestRate>0.25</BorrowerInterestRate><PaymentDeadlineDate>2017-01-21+01:00</PaymentDeadlineDate><AmountInclFee>62</AmountInclFee><AccountDebitor>Debitor</AccountDebitor><ForeignCurrency><ISOCode>EUR</ISOCode><Amount>999786</Amount></ForeignCurrency></Account></AccountsInOverdraft></overdraft>",
+                "outputColor" : "Y",
+                "documentLanguageCode" : "da_DK",        
+                "applicationId" : "NEXT",
+                "countryCode" : "DK"
+         } 
+    },  
+    "archiveDocuments" : {
+        "entityName" : "CustomerDokDK",
+        "nameValues" : [      
+            { "name" : "branchId", "value": "2427" },
+            { "name" : "customerId1", "value": "4621659761" },
+            { "name" : "category", "value": "test" },
+            { "name" : "subcategory", "value": "test" },
+            { "name" : "employeeId", "value": "G97435" },
+            { "name" : "genCreateDate", "value": "2016-09-26T12:17:25", "xmlType" : "dateTimeValue" },
+            { "name" : "genDocTypeName", "value": "test" },
+            { "name" : "genStoreReqId", "value": "test" }
+        ]
+    }    
+  }
+}

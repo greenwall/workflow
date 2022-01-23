@@ -1,0 +1,78 @@
+<soapenv:Envelope xmlns:obj="http://servicecontext.ntpsoa.nordea.com/object" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:v2="http://documentmanagement.dma.nordea.com/document/service/v2">
+   <soapenv:Header>
+      <ns2:serviceContext schemaVersion="1.0" xmlns:ns2="http://servicecontext.ntpsoa.nordea.com/object" xmlns:ns3="http://error.ntpsoa.nordea.com/object/v1" xmlns:ns4="http://documentmanagement.dma.nordea.com/documentread/service/v2">
+         <ns2:userId>DK000000000077017674</ns2:userId>
+         <ns2:technicalUserId>TECH</ns2:technicalUserId>
+         <ns2:sessionId>XMxmRTh6UogSLRgn07o8qQCC4978510566402776631xxxxxxxxx</ns2:sessionId>
+         <ns2:requestId>90660974:074:000</ns2:requestId>
+         <ns2:applicationId>NTPREF</ns2:applicationId>
+         <ns2:channelId>BRANCH</ns2:channelId>
+         <ns2:clientType>JPF</ns2:clientType>
+         <ns2:clientComponent>solutionproposal</ns2:clientComponent>
+         <ns2:clientComponentVersion>1.0-beta</ns2:clientComponentVersion>
+         <ns2:clientAction>accept_proposal</ns2:clientAction>
+         <ns2:clientView>show_proposal</ns2:clientView>
+         <ns2:processInstance>true</ns2:processInstance>
+         <ns2:authMethod>NINAA</ns2:authMethod>
+         <ns2:officeMode>OFFICE</ns2:officeMode>
+         <ns2:userLocation xsi:nil="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+         <ns2:requestDomain>SE</ns2:requestDomain>
+         <ns2:messageTimeStamp>2011-04-05T11:04:30.193+03:00</ns2:messageTimeStamp>
+         <ns2:auditCategory>TRACK</ns2:auditCategory>
+         <ns2:test>false</ns2:test>
+         <ns2:testParams>
+            <ns2:testParam target="SC">test</ns2:testParam>
+            <ns2:testParam target="PerformanceTraceEnabled">false</ns2:testParam>
+         </ns2:testParams>
+         <ns2:accountingUnit>ACCUNIT</ns2:accountingUnit>
+      </ns2:serviceContext>
+   </soapenv:Header>
+   <soapenv:Body>
+      <v2:sendDocumentsForCentralPrintRequest>
+         <identifier>EZIO</identifier>
+         <metaData/>
+         <payload>
+            <createDocument>
+               <creationMetaData>
+                  <documentLanguageCode>no_NO</documentLanguageCode>
+                  <countryCode>DK</countryCode>
+                  <deliveryType>REK</deliveryType>
+                  <version>001</version>
+                  <returnAddress1>Nordea Bank AB (publ)</returnAddress1>
+                  <returnAddress2>Regeringsgatan 59, 105 71 Stockholm</returnAddress2>
+                  <customer>
+                     <customerNumber>123456</customerNumber>
+                     <firstName>Timo</firstName>
+                     <lastName>Sutinen</lastName>
+                     <address>Storgatan 21</address>
+                     <address2>Storgatan 46</address2>
+                     <COaddress>C/O Nordea</COaddress>
+                     <zipCode>10571</zipCode>
+                     <city>Stockholm</city>
+                     <country>Denmark</country>
+                  </customer>
+               </creationMetaData>
+               <documentMetaData>
+                  <contentData>
+                     <autoFilledText>
+                        <header>Hej</header>
+                        <header/>
+                        <header>Varsågod, här är din startkod som du använder för att komma igång med våra tjänster.</header>
+                        <text><![CDATA[<cr><cr><cr><cr><cr><cr><cr><bold11>Gör så här:<cr><t1><norm11>1.<t2>gå till www.nordea.se/startkod<cr><t1>2. <t1>följ instruktionerna på sidan<cr><cr>För dig som hellre använder Telefonbanken, ring oss på telefon 0771-22 44 88 för att få instruktioner om hur du kommer igång<cr><cr><bold11>Viktigt att tänka på:<cr><cr><t1><norm11>•<t1>Din startkod är personlig<cr><t1>•<t1>Lämna aldrig ut din startkod till någon annan och förvara den på ett säkert sätt.<cr><t1>•<t1>Om det inte är du som har beställt startkoden, kontakta genast Nordea.<cr><cr>Har du frågor är du välkommen att ringa oss på telefon 0771-22 44 88, öppet alla dagar, dygnet runt.]]></text>
+                        <signature><![CDATA[<bold11>Din startkod är:  1234 5678<cr><cr>Din startkod är giltig t o m 2014-04-04.]]></signature>
+                     </autoFilledText>
+                     <footerCompany>Nordea Bank AB (publ)</footerCompany>
+                     <footerAddress>Postadress
+105 71 Stockholm</footerAddress>
+                     <footerWWW>Internet www.nordea.se</footerWWW>
+                  </contentData>
+                  <documentDescriptor>
+                     <documentType>PASSWORD</documentType>
+                     <copies>1</copies>
+                  </documentDescriptor>
+               </documentMetaData>
+            </createDocument>
+         </payload>
+      </v2:sendDocumentsForCentralPrintRequest>
+   </soapenv:Body>
+</soapenv:Envelope>

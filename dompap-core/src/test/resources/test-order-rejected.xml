@@ -1,0 +1,74 @@
+<env:Envelope xmlns:env="http://schemas.xmlsoap.org/soap/envelope/"
+	xmlns:wsa="http://www.w3.org/2005/08/addressing">
+	<env:Header>
+		<serviceContext xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			xmlns:h="http://servicecontext.ntpsoa.nordea.com/object"
+			schemaVersion="1.0" xmlns="http://servicecontext.ntpsoa.nordea.com/object">
+			<h:userId>NXUPCL</h:userId>
+			<h:technicalUserId></h:technicalUserId>
+			<h:sessionId>2b9538a5-3da6-4003-ac81-b1f2d423e691</h:sessionId>
+			<h:requestId></h:requestId>
+			<h:applicationId>NXUPCL</h:applicationId>
+			<h:channelId>BRANCH</h:channelId>
+			<h:clientType>JPF</h:clientType>
+			<h:clientComponent>UploadClient</h:clientComponent>
+			<h:clientComponentVersion>1.0</h:clientComponentVersion>
+			<h:clientAction>sendDocument</h:clientAction>
+			<h:clientView></h:clientView>
+			<h:processInstance></h:processInstance>
+			<h:authMethod>NINAA</h:authMethod>
+			<h:officeMode>OFFICE</h:officeMode>
+			<h:userLocation></h:userLocation>
+			<h:branch>1740</h:branch>
+			<h:customer>4605044870</h:customer>
+			<h:employee>G93283</h:employee>
+			<h:requestDomain>DK</h:requestDomain>
+			<h:messageTimeStamp>2015-10-22T14:31:50</h:messageTimeStamp>
+			<h:auditCategory></h:auditCategory>
+			<h:test>true</h:test>
+			<h:testParams xsi:nil="true" />
+			<h:accountingUnit>1050001740</h:accountingUnit>
+		</serviceContext>
+		<wsa:To>http://10.139.16.24:8080/documentbox/callback/services/nds
+		</wsa:To>
+		<wsa:Action>reportEvent</wsa:Action>
+		<wsa:MessageID>urn:489252A078B911E5BFA14D0D93D360F5</wsa:MessageID>
+		<wsa:RelatesTo>urn:489252A078B911E5BFA14D0D93D360F5</wsa:RelatesTo>
+		<wsa:ReplyTo>
+			<wsa:Address>http://www.w3.org/2005/08/addressing/anonymous
+			</wsa:Address>
+			<wsa:ReferenceParameters>
+				<instra:tracking.ecid xmlns:instra="http://xmlns.oracle.com/sca/tracking/1.0">def9dfb7f023fadb:5bdd0296:1508a888f0d:-8000-0000000000023547
+				</instra:tracking.ecid>
+				<instra:tracking.conversationId
+					xmlns:instra="http://xmlns.oracle.com/sca/tracking/1.0">urn:489252A078B911E5BFA14D0D93D360F5
+				</instra:tracking.conversationId>
+				<instra:tracking.parentComponentInstanceId
+					xmlns:instra="http://xmlns.oracle.com/sca/tracking/1.0">reference:6020659
+				</instra:tracking.parentComponentInstanceId>
+				<instra:tracking.compositeInstanceCreatedTime
+					xmlns:instra="http://xmlns.oracle.com/sca/tracking/1.0">2015-10-22T14:31:50.601+02:00
+				</instra:tracking.compositeInstanceCreatedTime>
+			</wsa:ReferenceParameters>
+		</wsa:ReplyTo>
+	</env:Header>
+	<env:Body>
+		<reportEventRequest
+			xmlns:soehs="http://digitalsigning.ntp.nordea.com/signordereventhandler/service/v2"
+			xmlns="http://digitalsigning.ntp.nordea.com/signordereventhandler/service/v2">
+			<eventOccured xmlns="">2015-10-22T14:34:47.5192511+02:00
+			</eventOccured>
+			<eventReported xmlns="">2015-10-22T14:34:47.546683
+			</eventReported>
+			<documentURI xmlns="">http://archivesrest.site.midas.root4.net:7501/archives/rest/1.0/read/find/content?genDocumentKey=NBAgSDDK1lfkuk8y5ra0z&amp;entity=CustomerDokDK
+			</documentURI>
+			<event xmlns="">order.rejected</event>
+			<recipientList xmlns="">
+				<recipient>
+					<nationalPersonId>0505550673</nationalPersonId>
+					<countryCode>DK</countryCode>
+				</recipient>
+			</recipientList>
+		</reportEventRequest>
+	</env:Body>
+</env:Envelope>

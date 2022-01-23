@@ -1,0 +1,7 @@
+INSERT INTO WFLW_VERSION (SCRIPT) 
+VALUES ('V015__exec_seqno.sql');
+
+--EXEC_SEQNO is incremented every time the workflow is picked up for execution
+ALTER TABLE WFLW_WORKFLOW ADD EXEC_SEQNO INT;
+
+ALTER TABLE WFLW_ARCHIVED_WORKFLOW ADD EXEC_SEQNO INT;

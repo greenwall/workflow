@@ -1,0 +1,29 @@
+<workflow>
+	<externalKey>[client-correlation-id]</externalKey>
+	<userId>G93283</userId>
+	<branchId>4782</branchId>
+	<creationTime>2016-12-31 23:59:59</creationTime>
+	<lastUpdateTime>2016-12-31 23:59:59</lastUpdateTime>	
+	<workflowClassName>com.nordea.documentbox.workflow.fi.DocumentProcessFI</workflowClassName>
+	<content>
+		<DocumentProcessFI>
+			<x1>...</x1>
+			<x2><y></y><y></y></x2>
+			<x3>...</x3>
+		</DocumentProcessFI>		
+	</content>
+	<methodName>archiveDocuments</methodName>
+	<startWhen>2016-12-31 23:59:59</startWhen>
+	<methodStarted>returned-on-query</methodStarted>
+	<methodEnded>returned-on-query</methodEnded>
+	<exceptionName>returned-on-query</exceptionName>
+	<exceptionMessage>returned-on-query</exceptionMessage>
+	<stacktrace>returned-on-query</stacktrace>
+	<serverName>returned-on-query</serverName>
+	<version>returned-on-query</version>			
+	<metadata>
+		<property id="1">valueA</property>
+		<property id="1">valueB</property>
+		<property id="2">valueC</property>
+	</metadata>
+</workflow>

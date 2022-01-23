@@ -1,0 +1,133 @@
+{ "state":
+    { "applicationId" : "DIGI", "userId" : "N456670", "branchId" : "4640", "country" : "SE",
+        "recipients" : [
+            { "customerNumber" : "197706010597", "customerName" : "Bengt", "nationalPersonId" : "197706010597", "email" : "bengt.allard@nordea.com", "phoneNumber" : "000919922892381" }
+        ],
+        "archiveDocuments" : {
+            "entityName": "CustomerDocPBSE", "fieldForDocumentKey": "genDocumentKey", "fieldForSignOrderId": "agreementId", "fieldForSdoKey": "SDOReference",
+            "nameValues" : [
+                { "name" : "customerNumber", "value": "197706010597" },
+                { "name" : "mainCategory", "value": "Private Banking" },
+                { "name" : "intCategory", "value":"ACT"},
+                { "name" : "subCategory2", "value": "Avtal" },
+                { "name" : "documentName", "value": "Private Banking-avtal" },
+                { "name" : "documentTypeCode", "value": "61142" }, { "name" : "documentTypeName", "value": "Kundavtal" }, { "name" : "sourceSystem", "value": "ACT" },
+                { "name" : "destination", "value": "yes" }, { "name" : "crtDt", "value": "2018-01-23T14:20:22.208Z", "xmlType" : "dateTimeValue" },
+                { "name" : "mimeType", "value": "application/pdf" }, { "name" : "employeeId", "value": "N456670" }, { "name" : "customerNumberList", "value": "197706010597" },
+                { "name" : "branchId", "value" : "4640"} ] }, "archiveSdo" : { "nameValues" : [ { "name" : "CustNbr", "value": "197706010597" },
+                { "name" : "customerId1", "value": "197706010597" }, { "name" : "refNo", "value": "refNo" }, { "name" : "acceptanceInfo", "value": "acceptanceInfo" },
+                { "name" : "genStoringSystem", "value": "ACT" }, { "name" : "documentTypeName", "value": "Kundavtal" }, { "name" : "countryCode", "value": "SE" },
+                { "name" : "genLanguageCode", "value": "SE" }, { "name" : "crtDt", "value": "2018-01-23T14:20:22.208Z", "xmlType" : "dateTimeValue" }
+                ],
+            "fieldForSignOrderId" : "signOrderId", "entityName" : "NBAgreementSESDO", "fieldForDocumentKey" : "documentReference"
+        },
+        "target" : "nds",
+        "targets" : {
+            "nds" : {
+                "signingMethod" : "NemID", "digitalDocumentType" : "Kundavtal", "sender" : "bank", "realTimeDelivery" : "true", "expiry" : "30"
+            }
+        },
+        "orderAccepted" : { "archiveUpdateDocument" : { "nameValues" : [ { "name" : "docStatus", "value" : "order.accepted" } ] }, "postEvent" : { "uri" : "http://localhost:8080/api/omsi/test", "info" : "hello Ã¦Ã¸Ã¥Ã†Ã˜Ã…" } }, "orderSigned" : { "archiveUpdateDocument" : { "nameValues" : [ { "name" : "docStatus", "value" : "order.signed" } ] }, "postEvent" : { "uri" : "http://localhost:8080/api/omsi/test", "info" : "hello Ã¦Ã¸Ã¥Ã†Ã˜Ã…" } }, "orderRejected" : { "archiveUpdateDocument" : { "nameValues" : [ { "name" : "docStatus", "value" : "order.rejected" } ] }, "postEvent" : { "uri" : "http://localhost:8080/api/omsi/test", "info" : "hello Ã¦Ã¸Ã¥Ã†Ã˜Ã…" } }, "orderExpired" : { "archiveUpdateDocument" : { "nameValues" : [ { "name" : "docStatus", "value" : "order.expired" } ] }, "postEvent" : { "uri" : "http://localhost:8080/api/omsi/test", "info" : "hello Ã¦Ã¸Ã¥Ã†Ã˜Ã…" } }, "orderFailed" : { "archiveUpdateDocument" : { "nameValues" : [ { "name" : "docStatus", "value" : "order.failed" } ] }, "postEvent" : { "uri" : "http://localhost:8080/api/omsi/test", "info" : "hello Ã¦Ã¸Ã¥Ã†Ã˜Ã…" } }, "orderCanceled" : { "archiveUpdateDocument" : { "nameValues" : [ { "name" : "docStatus", "value" : "order.canceled" } ] }, "postEvent" : { "uri" : "http://localhost:8080/api/omsi/test", "info" : "hello Ã¦Ã¸Ã¥Ã†Ã˜Ã…" } }, "document" : { "name": "Private Banking Agreement", "signing": true, "convertToPdfA": false, "entityName": "CustomerDocPBSE", "input": { "hpxPayload": { "hpXtreamIdentifier": "PBA",
+
+    "content": "
+<createDocument>
+    <documentMetaData>
+        <contentData>
+            <distribution>CENTRAL_PRINT</distribution>
+            <signature>
+                <date>2018-01-01</date>
+                <city>Stockholm</city>
+                <signatureType>PHYSICAL</signatureType>
+            </signature>
+            <draft>true</draft>
+            <customers>
+                <customer>
+                    <fullName>Kalle Kula</fullName>
+                    <customerId>191212121212</customerId>
+                    <nationalIdentifier>191212121212</nationalIdentifier>
+                    <naturalPerson>false</naturalPerson>
+                    <address>
+                        <street>VÃ¤stravÃ¤gen 3</street>
+                        <postalCode>17441</postalCode>
+                        <city>Sundbyberg</city>
+                        <country>Sverige</country>
+                    </address>
+                    <email>mailadress@hotmale.com</email>
+                </customer>
+            </customers>
+            <privateBanker>
+                <fullName>Ola GrÃ¤vling</fullName>
+                <telephoneNumber>08-121212</telephoneNumber>
+                <phoneNumber>08-121212</phoneNumber>
+                <email>ola.gravling@nordea.com</email>
+                <branch>
+                    <clrn>3266</clrn>
+                    <address>
+                        <street>AttundafÃ¤ltet 6</street>
+                        <postalCode>18321</postalCode>
+                        <city>TÃ¤bv</city>
+                        <country>Sverige</country>
+                    </address>
+                </branch>
+            </privateBanker>
+            <services>
+                <service>INVESTMENT_ADVICE</service>
+                <service>LEGAL</service>
+                <service>NEXT_GENERATION</service>
+            </services>
+            <consents>
+                <consent>EMAIL</consent>
+            </consents>
+            <fee>
+                <fixedAmount>7500</fixedAmount>
+                <variableAmount>
+                    <percentage>1.5</percentage>
+                    <minimum>5000</minimum>
+                </variableAmount>
+                <currency>SEK</currency>
+                <startDate>2018-02-01</startDate>
+                <feeText languageCode="sv_SE"><![CDATA[<b2>Ã…rsarvode]]></feeText>
+            </fee>
+            <fee>
+                <feeText languageCode="sv_SE"><![CDATA[<bp2>6 500 SEK]]></feeText>
+                <feeText languageCode="sv_SE"><![CDATA[<bp2>I avgiften ingÃ¥r mervÃ¤rdesskatt 25%]]></feeText>
+                <feeText languageCode="sv_SE"><![CDATA[<bp2>BerÃ¤kning av avgift startar from 2018-02-01]]></feeText>
+            </fee>
+            <rebate>
+                <fixedAmount>2000</fixedAmount>
+                <variableAmount>
+                    <percentage>1.5</percentage>
+                </variableAmount>
+                <startDate>2018-02-01</startDate>
+                <endDate>2018-06-30</endDate>
+            </rebate>
+            <tradingFee>
+                <variableAmount>
+                    <percentage>1.5</percentage>
+                </variableAmount>
+            </tradingFee>
+            <billing>
+                <startDate>2018-03-01</startDate>
+                <period>ANNUAL</period>
+            </billing>
+            <strategyMeeting>
+                <period>ANNUAL</period>
+            </strategyMeeting>
+            <reporting>
+                <period>ANNUAL</period>
+            </reporting>
+        </contentData>
+        <documentDescriptor>
+            <documentType>AGREMT</documentType>
+            <docCopyReceiver>CUSTOMER</docCopyReceiver>
+            <languageCode>en_SE</languageCode>
+            <documentTypeName>AFIL01.P.SE</documentTypeName>
+        </documentDescriptor>
+        <documentDescriptor>
+            <documentType>TERMS</documentType>
+            <docCopyReceiver>CUSTOMER</docCopyReceiver>
+            <languageCode>en_SE</languageCode>
+            <documentTypeName>TAC01.P.SE</documentTypeName>
+        </documentDescriptor>
+    </documentMetaData>
+</createDocument>" } } } }}

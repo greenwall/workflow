@@ -1,0 +1,63 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+    <soapenv:Header>
+        <wsse:Security soapenv:mustUnderstand="0"
+                       xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd"
+                       xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
+            <wsse:UsernameToken wsu:Id="UsernameToken-%--osb.sessionid--%">
+                <wsse:Username>%--osb.username--%</wsse:Username>
+                <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText">%--osb.password--%</wsse:Password>
+                <wsse:Nonce EncodingType="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-soap-message-security-1.0#Base64Binary">%--osb.nonce--%</wsse:Nonce>
+                <wsu:Created>%--zulutime--%</wsu:Created>
+            </wsse:UsernameToken>
+        </wsse:Security>
+        <h:serviceContext schemaVersion="1.0" xmlns="http://servicecontext.ntpsoa.nordea.com/object"
+                          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                          xmlns:h="http://servicecontext.ntpsoa.nordea.com/object">
+            <userId>NXUPCL</userId>
+            <technicalUserId />
+            <sessionId>%--sessionId--%</sessionId>
+            <requestId />
+            <applicationId>NXUPCL</applicationId>
+            <channelId>BRANCH</channelId>
+            <clientType>JPF</clientType>
+            <clientComponent>UploadClient</clientComponent>
+            <clientComponentVersion>1.0</clientComponentVersion>
+            <clientAction>sendDocument</clientAction>
+            <clientView />
+            <processInstance />
+            <authMethod>NINAA</authMethod>
+            <officeMode>OFFICE</officeMode>
+            <userLocation />
+            <branch>%--branch--%</branch>
+            <customer>%--customer--%</customer>
+            <employee>%--employeeId--%</employee>
+            <requestDomain>DK</requestDomain>
+            <messageTimeStamp>%--timestamp--%</messageTimeStamp>
+            <auditCategory />
+            <test>true</test>
+            <testParams xsi:nil="true" />
+            <accountingUnit>%--accountingUnit--%</accountingUnit>
+        </h:serviceContext>
+    </soapenv:Header>
+    <soapenv:Body xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+        <sendDocumentRequest xmlns="http://digitalsigning.ntp.nordea.com/digitalsigning/service/v2">
+            <recipientList xmlns="">
+                %--recipientList--%
+            </recipientList>
+            <content xmlns="">
+                <documentReference>
+                    <documentURI>%--documentURI--%</documentURI>
+                    <documentTitle>%--documentTitle--%</documentTitle>
+                    <documentFileType>PDF</documentFileType>
+                </documentReference>
+                    %--signing--%
+                <attachmentList>
+                    %--attachments--%
+                </attachmentList>
+            </content>
+            <callbackURL xmlns="">%--callbackURL--%</callbackURL>
+            <sender xmlns="">bank</sender>
+            <realTimeDelivery xmlns="">true</realTimeDelivery>
+        </sendDocumentRequest>
+    </soapenv:Body>
+</soapenv:Envelope>

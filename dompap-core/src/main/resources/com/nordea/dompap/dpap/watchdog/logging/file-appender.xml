@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+NeXT File appender logback configuration provided for import.
+-->
+
+<included>
+  <appender name="WATCHDOG-FILE"
+    class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <encoder>
+      <pattern>%d [%t] %p %c{40} - %m%n</pattern>
+    </encoder>
+    <file>${LOG_FILE}.watchdog</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+      <fileNamePattern>${LOG_FILE}.watchdog.%i</fileNamePattern>
+      <maxIndex>20</maxIndex>
+    </rollingPolicy>
+    <triggeringPolicy
+      class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+      <MaxFileSize>30MB</MaxFileSize>
+    </triggeringPolicy>
+  </appender>
+</included>
