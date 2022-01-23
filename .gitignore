@@ -15,7 +15,9 @@
 /dompap-workflow-spring/
 /dompap-ui-util/
 /dompap-next/
+/dompap-rest-service-parent/
 /dompap-workflow-next/
+/dompap-workflow-parent/
 /dompap-workflow-rest/
 /dompap-workflow-spring-example/
 /dompap-perftest/
