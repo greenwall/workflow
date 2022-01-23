@@ -3,7 +3,8 @@
 DOMPAP is a Java library for building and executing workflows.
 
 A workflow is a long running process implemented as a plain Java class.
-Execution includes calling services (both Nordea and external) and end user activities.
+The process is checkpointed (storing state) after each succesful method/step.
+Execution may include calling services (both internal and external) and end user activities.
 
 # Purpose
 
@@ -263,11 +264,7 @@ The scripts for truncation are here:
  
  | 5.0 |   | 
  |----|---|
- | 2019-09-25 | Separated WorkFlowEndPoint REST service into separate module: [dompap-workflow-rest](./dompap-workflow-rest) to avoid dependency on Spring REST in dompap-core.  
- | 2019-09-25 | Separated com.nordea.dompap.workflow.ui into separate module: [dompap-ui-util](./dompap-ui-util) to avoid dependency on Vaadin etc. in dompap-core.
- | 2019-09-25 | Deprecated (and modified) MobileNumber_NO (dompap-domain) to avoid Vaadin dependency.
- | 2019-09-26 | Bug-fix: On retry the current event was not available, because CURRENT_EVENT was not loaded from DB.
- 
+ |  |  |
  
 
 

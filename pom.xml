@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.nordea.next</groupId>
+	<artifactId>dompap-build</artifactId>
+	<version>6.0-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	<name>dompap-build</name>
+
+	<properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <java.version>1.8</java.version>
+		<next.version>2.14.28</next.version>
+        <archive.api.version>6.7</archive.api.version>
+		<maven.build.timestamp.format>yyyyMMdd-HHmm</maven.build.timestamp.format>
+		<dev.build.timestamp>${maven.build.timestamp}</dev.build.timestamp>
+        <!-- jgitflow setup. Overwritten during release process -->
+		<git.user />
+        <git.password />
+	</properties>
+
+
+	<modules>
+  		<module>dompap-domain</module>
+  		<module>dompap-common</module>
+  		<module>dompap-core</module>
+		<module>dompap-core-testutils</module>
+        <!-- Bill-of-material where all version are managed -->
+        <module>dompap-bom</module>
+        <!--<module>dompap-workflow-next</module>-->
+        <module>dompap-workflow-spring</module>
+        <!-- Parent project for all workflow projects -->
+        <module>dompap-workflow-parent</module>
+        <!-- Parent project for REST services projects without workflows -->
+        <module>dompap-rest-service-parent</module>
+		<!-- WARNING!!! Temporary excluded to conclude the release -->
+        <!-- module>dompap-perftest</module -->
+        <module>dompap-jdbc</module>
+        <!--module>dompap-workflow-spring-example</module-->
+	</modules>
+	
+	<build>
+		<pluginManagement>
+			<plugins>
+                <plugin>
+                    <groupId>external.atlassian.jgitflow</groupId>
+                    <artifactId>jgitflow-maven-plugin</artifactId>
+                    <version>1.0-m5.1</version>
+                    <configuration>
+                        <username>${git.user}</username>
+                        <password>${git.password}</password>
+                        <flowInitContext>
+                            <masterBranchName>master</masterBranchName>
+                            <developBranchName>develop</developBranchName>
+                            <featureBranchPrefix>feature/</featureBranchPrefix>
+                            <releaseBranchPrefix>release/</releaseBranchPrefix>
+                            <hotfixBranchPrefix>hotfix/</hotfixBranchPrefix>
+                        </flowInitContext>
+                        <defaultOriginUrl>https://SVC8001:heYjFPRzhS0zfq@bitbucket.itgit.oneadr.net/scm/tellos/dompap.git</defaultOriginUrl>
+                        <pullDevelop>true</pullDevelop>
+                        <autoVersionSubmodules>true</autoVersionSubmodules>
+                        <scmCommentPrefix>[jgitflow]</scmCommentPrefix>
+                        <!-- At this stage of gitflow implementation, features will not be pushed automatically -->
+                        <pushFeatures>false</pushFeatures>
+                        <pushReleases>true</pushReleases>
+                        <pushHotfixes>true</pushHotfixes>
+                        <keepBranch>false</keepBranch>
+                        <allowSnapshots>false</allowSnapshots>
+                        <!-- Upload artifact to Nexus -->
+                        <noDeploy>false</noDeploy>
+                        <!-- Project should not contain untracked files after build -->
+                        <!-- <allowUntracked>true</allowUntracked> -->
+                    </configuration>
+                </plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-deploy-plugin</artifactId>
+					<version>2.8.2</version>
+					<configuration>
+						<skip>false</skip>
+					</configuration>
+				</plugin>
+				<plugin>
+					<artifactId>maven-failsafe-plugin</artifactId>
+					<version>2.12</version>
+            		<configuration>
+    	        	</configuration>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>integration-test</goal>
+                            </goals>
+                            <configuration>
+                                <includes>
+                                    <include>**/*.class</include>
+                                </includes>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+				
+			</plugins>
+		</pluginManagement>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>7</source>
+                    <target>7</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
