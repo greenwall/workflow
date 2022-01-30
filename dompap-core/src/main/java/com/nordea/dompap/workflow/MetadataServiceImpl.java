@@ -4,7 +4,6 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.nordea.dompap.jdbc.JdbcUtil;
 import com.nordea.dompap.workflow.config.WorkFlowConfig;
-import com.nordea.dompap.workflow.config.WorkFlowContext;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
@@ -56,7 +55,7 @@ public class MetadataServiceImpl implements MetadataService {
 						}
 					}
 					mp.add(type.getName());
-					PropertyType propType = getOrCreatePropertyType(type.getName(), type.getDescription());
+					PropertyType propType = getOrCreatePropertyType(con, type.getName(), type.getDescription());
 
 					// Execute inserts in batch approximately inserts 10 rows of metadata in half the time
 					ps.setString(1, id.toString());
@@ -89,11 +88,11 @@ public class MetadataServiceImpl implements MetadataService {
 	@Override
 	public Metadata getMetadata(UUID id) throws ResourceException {
 		getPropertyTypes();
-		Map<String, PropertyType> typeMap = getNamedPropertyMap();
 
 		String selectMetadata = "select doc.ID, t.NAME PROP_NAME, n.VALUE from WFLW_WORKFLOW doc, WFLW_METADATA n, WFLW_PROPERTYTYPE t where doc.ID=? and n.PROPERTY_ID=t.ID and doc.ID=n.WORKFLOW_ID";
 		try (Connection con = getDataSource().getConnection();
 			 PreparedStatement ps = con.prepareStatement(selectMetadata)) {
+			Map<String, PropertyType> typeMap = getNamedPropertyMap(con);
 			ps.setObject(1, id.toString());
 			
 			Multimap<PropertyType, String> metadata = HashMultimap.create();
@@ -107,7 +106,7 @@ public class MetadataServiceImpl implements MetadataService {
 			}			
 			return new Metadata(metadata);
 		} catch (SQLException e) {
-			throw new ResourceException(e.toString() + ":" + selectMetadata + " WorkflowId: " + id.toString(), e);
+			throw new ResourceException(e + ":" + selectMetadata + " WorkflowId: " + id.toString(), e);
 		}
 						
 	}
@@ -121,10 +120,18 @@ public class MetadataServiceImpl implements MetadataService {
 	}
 
 	private PropertyType createPropertyType(String name, String description) throws ResourceException {
-		PropertyType type = null;
-		String insertIntoPropertyType = "insert into WFLW_PROPERTYTYPE (ID, NAME, DESCRIPTION) values (?,?,?) ";
 		try (Connection con = getDataSource().getConnection()) {
 			con.setAutoCommit(true);
+			return createPropertyType(con, name, description);
+		} catch (SQLException e) {
+			throw new ResourceException(e.toString(), e);
+		}
+	}
+
+	private PropertyType createPropertyType(Connection con, String name, String description) throws ResourceException {
+		PropertyType type = null;
+		String insertIntoPropertyType = "insert into WFLW_PROPERTYTYPE (ID, NAME, DESCRIPTION) values (?,?,?) ";
+		try {
 			// Select next id
 			int nextId;
 			String selectMax1FromPropertyType = "select MAX(ID)+1 from WFLW_PROPERTYTYPE";
@@ -140,18 +147,18 @@ public class MetadataServiceImpl implements MetadataService {
 				
 				type = new PropertyType(nextId, name, description);
 			}
+			log.info("Property type created: {} {}", type.getId(), type.getName());
+			// Force reload
+			initPropertyTypes(con);
 		} catch (SQLIntegrityConstraintViolationException e) {
 			// Property already inserted - key constraint violation - reload
 			// Force reload
 			log.error("Property type already inserted: {}", name);
-			initPropertyTypes();
-			throw new ResourceException(e.toString() + ":" + insertIntoPropertyType, e);			
+			initPropertyTypes(con);
+			throw new ResourceException(e + ":" + insertIntoPropertyType, e);
 		} catch (SQLException e) {
-			throw new ResourceException(e.toString() + ":" + insertIntoPropertyType, e);
+			throw new ResourceException(e + ":" + insertIntoPropertyType, e);
 		}	
-		log.info("Property type created: {} {}", type.getId(), type.getName());
-		// Force reload
-		initPropertyTypes();
 		return type;
 	}
 
@@ -175,11 +182,19 @@ public class MetadataServiceImpl implements MetadataService {
 	    	}
     	}
     	return map;
-	}	
-		
+	}
+
 	private Map<String, PropertyType> getNamedPropertyMap() throws ResourceException {
+		try (Connection con = getDataSource().getConnection()) {
+			return getNamedPropertyMap(con);
+		} catch (SQLException e) {
+			throw new ResourceException(e.toString(), e);
+		}
+	}
+
+	private Map<String, PropertyType> getNamedPropertyMap(Connection con) throws ResourceException {
 		if (nameTypeMap==null) {
-			initPropertyTypes();
+			initPropertyTypes(con);
 		}
 		return nameTypeMap;
 	}
@@ -191,9 +206,17 @@ public class MetadataServiceImpl implements MetadataService {
 		}
 		return idTypeMap;
 	}
-	
-	private synchronized void initPropertyTypes() throws ResourceException {
-    	propertyTypes = loadPropertyTypes();
+
+	public void initPropertyTypes() throws ResourceException {
+		try (Connection con = getDataSource().getConnection()) {
+			initPropertyTypes(con);
+		} catch (SQLException e) {
+			throw new ResourceException(e.toString(), e);
+		}
+	}
+
+	private synchronized void initPropertyTypes(Connection con) throws ResourceException {
+    	propertyTypes = loadPropertyTypes(con);
     	HashMap<String, PropertyType> _nameTypeMap = new HashMap<>();
     	for (PropertyType type : propertyTypes) {
     		_nameTypeMap.put(type.getName(), type);
@@ -208,9 +231,9 @@ public class MetadataServiceImpl implements MetadataService {
 	}
 	
 	private final String selectPropertyTypes = "select ID, NAME, DESCRIPTION from WFLW_PROPERTYTYPE";
-	private List<PropertyType> loadPropertyTypes() throws ResourceException {
-		try (Connection con = getDataSource().getConnection();
-			PreparedStatement ps = con.prepareStatement(selectPropertyTypes)) {
+	private List<PropertyType> loadPropertyTypes(Connection con) throws ResourceException {
+//		try (Connection con = getDataSource().getConnection();
+		try (PreparedStatement ps = con.prepareStatement(selectPropertyTypes)) {
 			return JdbcUtil.listQuery(ps, (rows, rowNum) -> {
 				int id = rows.getInt("ID");
 				String name = rows.getString("NAME");
@@ -218,18 +241,26 @@ public class MetadataServiceImpl implements MetadataService {
 				return new PropertyType(id, name, description);
 			});
 		} catch (SQLException e) {
-			throw new ResourceException(e.toString() + ":" + selectPropertyTypes, e);
-		}		
+			throw new ResourceException(e + ":" + selectPropertyTypes, e);
+		}
 	}			
 	
 	@Override
 	public PropertyType getOrCreatePropertyType(String propertyTypeName, String description) throws ResourceException {
-    	PropertyType type = getNamedPropertyMap().get(propertyTypeName);
-    	if (type==null) {
-    		log.info("Create metadata property type: {} {}", propertyTypeName, description);
-    		type = createPropertyType(propertyTypeName, description);
-    	}
-    	return type;
+		try (Connection con = getDataSource().getConnection()) {
+			return getOrCreatePropertyType(con, propertyTypeName, description);
+		} catch (SQLException e) {
+			throw new ResourceException(e.toString(), e);
+		}
+	}
+
+	private PropertyType getOrCreatePropertyType(Connection con, String propertyTypeName, String description) throws ResourceException {
+		PropertyType type = getNamedPropertyMap(con).get(propertyTypeName);
+		if (type==null) {
+			log.info("Create metadata property type: {} {}", propertyTypeName, description);
+			type = createPropertyType(con, propertyTypeName, description);
+		}
+		return type;
 	}
 
 	@Override
@@ -239,7 +270,7 @@ public class MetadataServiceImpl implements MetadataService {
 			ps.setString(1, workflowId.toString());
 			return ps.execute();			
 		} catch (SQLException e) {
-			throw new ResourceException(e.toString() + ":" + selectPropertyTypes + " WorkflowId: " + workflowId.toString(), e);
+			throw new ResourceException(e + ":" + selectPropertyTypes + " WorkflowId: " + workflowId.toString(), e);
 		}		
 	}	
 

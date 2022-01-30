@@ -148,8 +148,6 @@ public class WorkFlowServiceImpl implements WorkFlowService {
                 ps.setTimestamp(6, new java.sql.Timestamp(creationTime.getTime()));
                 ps.setTimestamp(7, new java.sql.Timestamp(lastUpdateTime.getTime()));
                 ps.setString(8, methodName);
-                // TOD-HITESH Need to flush this logger in future
-                log.info(" Value of StartWhen:{}",startWhen);
                 ps.setTimestamp(9, startWhen != null ? new java.sql.Timestamp(startWhen.getTime()) : new java.sql.Timestamp(System.currentTimeMillis()));
                 ps.setString(10, subType);
                 ps.setString(11, requestDomain);
@@ -169,6 +167,7 @@ public class WorkFlowServiceImpl implements WorkFlowService {
 
             metadataService.storeMetadata(con, id, metadata);
             con.commit();
+            con.setAutoCommit(true);
 
             WorkFlow<T> wf;
             if (branchId!=null) {
@@ -180,7 +179,7 @@ public class WorkFlowServiceImpl implements WorkFlowService {
             return wf;
 
         } catch (SQLException e) {
-            throw new ResourceException(e.toString() + ":" + sql, e);
+            throw new ResourceException(e + ":" + sql, e);
         }
     }
 
@@ -894,7 +893,7 @@ public class WorkFlowServiceImpl implements WorkFlowService {
             }
 
         } catch (SQLException e) {
-            throw new ResourceException(e.toString() + ":" + sql, e);
+            throw new ResourceException(e + ":" + sql, e);
         }
 
     }
@@ -923,7 +922,7 @@ public class WorkFlowServiceImpl implements WorkFlowService {
             ps.execute();
 
         } catch (SQLException e) {
-            throw new ResourceException(e.toString() + ":" + sql, e);
+            throw new ResourceException(e + ":" + sql, e);
         }
 
     }
@@ -1057,7 +1056,7 @@ public class WorkFlowServiceImpl implements WorkFlowService {
 
 
         } catch (SQLException e) {
-            throw new ResourceException(e.toString() + ":" + sql, e);
+            throw new ResourceException(e + ":" + sql, e);
         }
     }
 
@@ -1109,7 +1108,7 @@ public class WorkFlowServiceImpl implements WorkFlowService {
             ps.execute();
 
         } catch (SQLException e) {
-            throw new ResourceException(e.toString() + ":" + sql, e);
+            throw new ResourceException(e + ":" + sql, e);
         }
     }
 
@@ -1138,7 +1137,7 @@ public class WorkFlowServiceImpl implements WorkFlowService {
 
             return JdbcUtil.listQuery(ps, workFlowStepresultMapper);
         } catch (SQLException e) {
-            throw new ResourceException(e.toString() + ":" + sql, e);
+            throw new ResourceException(e + ":" + sql, e);
         }
     }
 
@@ -1175,7 +1174,7 @@ public class WorkFlowServiceImpl implements WorkFlowService {
             ps.execute();
 
         } catch (SQLException e) {
-            throw new ResourceException(e.toString() + ":" + sql, e);
+            throw new ResourceException(e + ":" + sql, e);
         }
     }
 
@@ -1194,7 +1193,7 @@ public class WorkFlowServiceImpl implements WorkFlowService {
         try (Connection con = getDataSource().getConnection(); PreparedStatement ps = sql.prepareStatement(con)) {
             ps.execute();
         } catch (SQLException e) {
-            throw new ResourceException(e.toString() + ":" + sql, e);
+            throw new ResourceException(e + ":" + sql, e);
         }    	
     }
     
@@ -1279,7 +1278,7 @@ public class WorkFlowServiceImpl implements WorkFlowService {
             con.commit();
 
         } catch (SQLException e) {
-            throw new ResourceException(e.toString() + ":" + sql, e);
+            throw new ResourceException(e + ":" + sql, e);
         }
     }
 

@@ -41,6 +41,9 @@ public class WorkFlowServiceSearchTest extends TestWithMemoryDB {
 
 	@Test
 	public void testSearchWithMetadata() throws ResourceException, IOException {
+		// In memory DB is cleared between tests, so propertyType map is invalid.
+		((MetadataServiceImpl)metadataService).initPropertyTypes();
+
 		UserId userId = new UserId("test1");
 		BranchId branchId = new BranchId(""+RandomUtils.nextInt(9999));
 
@@ -224,8 +227,11 @@ public class WorkFlowServiceSearchTest extends TestWithMemoryDB {
 			WorkFlowSearch all = new WorkFlowSearch();
 			WorkFlowSearchResult after = workFlowService.searchWorkFlows(all, 0, 100);
 			// TODO 2 workflows inserted and returned in arbitrary order
-			assertEquals(wOneMetadata.getId(), after.workflows.get(0).getId());
-			
+//			assertEquals(wOneMetadata.getId(), after.workflows.get(0).getId());
+
+			UUID uid = wOneMetadata.getId();
+			assertTrue(uid.equals(after.workflows.get(0).getId()) || uid.equals(after.workflows.get(1).getId()));
+
 			WorkFlow<?> w = null;
 			System.out.println("After: " + after.workflows.size());
 			System.out.println("Looking for: " + id);

@@ -39,11 +39,17 @@ public class WorkFlowSelectorTest extends TestWithMemoryDB {
 	@Autowired
 	private WorkFlowEventService eventService;
 
+	@Autowired
+	private MetadataService metadataService;
+
 	private ExecutorInfo executorInto = new ExecutorInfo("localhost", "-");
 
 
 	@Test
 	public void testSelectWorkflow() throws ResourceException, IOException {
+		// In memory DB is cleared between tests, so propertyType map is invalid.
+		((MetadataServiceImpl)metadataService).initPropertyTypes();
+
 		MyWorkflow wf = new MyWorkflow();
 		UUID id = UUID.randomUUID();
 		Metadata wfMetadata = new Metadata(null);
