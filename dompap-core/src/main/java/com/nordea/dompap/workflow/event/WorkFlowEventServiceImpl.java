@@ -2,7 +2,6 @@ package com.nordea.dompap.workflow.event;
 
 import com.nordea.dompap.jdbc.JdbcUtil;
 import com.nordea.dompap.jdbc.SqlUtils;
-import com.nordea.dompap.workflow.config.WorkFlowContext;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -56,10 +55,13 @@ public class WorkFlowEventServiceImpl implements WorkFlowEventService {
 				
 			return new WorkFlowEvent(id, creationTime, content, workflowId, eventType, eventName, null);
 		} catch (SQLException e) {
-			throw new ResourceException(e.toString() + ":" + sql, e);
+			throw wrapSqlException(e, sql);
 		}					
 	}	
-	
+
+	private ResourceException wrapSqlException(SQLException e, String sql) {
+		return new ResourceException(e + ":" + sql, e);
+	}
 	
 	@Override
 	public WorkFlowEvent updateEventInfo(WorkFlowEvent event, UUID workflowId, String eventName, String userId, String applicationId, String technicalUserId, String requestId, String requestDomain, String sessionId) throws ResourceException {
@@ -92,7 +94,7 @@ public class WorkFlowEventServiceImpl implements WorkFlowEventService {
 			
 			return event;
 		} catch (SQLException e) {
-			throw new ResourceException(e.toString() + ":" + sql, e);
+			throw wrapSqlException(e, sql);
 		}					
 	}	
 		
@@ -106,8 +108,8 @@ public class WorkFlowEventServiceImpl implements WorkFlowEventService {
 			ps.setString(1, uuid.toString());
 			return JdbcUtil.exactQuery(ps, eventMapper);
 		} catch (SQLException e) {
-			throw new ResourceException(e.toString() + ":" + sql, e);
-		}							
+			throw wrapSqlException(e, sql);
+		}
 	}
 
 	/**
@@ -126,7 +128,7 @@ public class WorkFlowEventServiceImpl implements WorkFlowEventService {
 			ps.setString(1, maxLength(workflowId.toString(), 36));
 			return SqlUtils.first(ps, eventMapper);
 		} catch (SQLException e) {
-			throw new ResourceException(e.toString() + ":" + sql, e);
+			throw wrapSqlException(e, sql);
 		}
 	}
 
@@ -144,7 +146,7 @@ public class WorkFlowEventServiceImpl implements WorkFlowEventService {
 			ps.setString(1, maxLength(workflowId.toString(), 36));
 			return SqlUtils.first(ps, eventMapper);
 		} catch (SQLException e) {
-			throw new ResourceException(e.toString() + ":" + sql, e);
+			throw wrapSqlException(e, sql);
 		}
 	}
 
@@ -163,7 +165,7 @@ public class WorkFlowEventServiceImpl implements WorkFlowEventService {
 			ps.setString(2, maxLength(event.id.toString(), 36));						
 			ps.execute();			
 		} catch (SQLException e) {
-			throw new ResourceException(e.toString() + ":" + sql, e);
+			throw wrapSqlException(e, sql);
 		}					
 	}
 
@@ -210,7 +212,7 @@ public class WorkFlowEventServiceImpl implements WorkFlowEventService {
 			con.commit();
 						
 		} catch (SQLException e) {
-			throw new ResourceException(e.toString() + ":" + sql, e);
+			throw wrapSqlException(e, sql);
 		}						
 	}
 		
@@ -296,7 +298,7 @@ public class WorkFlowEventServiceImpl implements WorkFlowEventService {
 				
 			return new WorkFlowEvent(workFlowEventBuilder.id, workFlowEventBuilder.creationTime, workFlowEventBuilder.content, workFlowEventBuilder.workflowId, workFlowEventBuilder.eventType, workFlowEventBuilder.eventName, null);
 		} catch (SQLException e) {
-			throw new ResourceException(e.toString() + ":" + sql, e);
+			throw wrapSqlException(e, sql);
 		}	
 	}
 }

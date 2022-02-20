@@ -63,7 +63,7 @@ public class WorkFlowEventSearchServiceImpl implements WorkFlowEventSearchServic
             List<WorkFlowEvent> workflows = JdbcUtil.listQuery(ps, WorkFlowEventServiceImpl.eventMapper);
             return new WorkFlowEventSearchResult(total, workflows);
         } catch (SQLException e) {
-            throw new ResourceException(e.toString() + ":" + sql, e);
+            throw wrapSqlException(e, sql);
         }
 	}	
 
@@ -85,7 +85,7 @@ public class WorkFlowEventSearchServiceImpl implements WorkFlowEventSearchServic
 
             return JdbcUtil.countQuery(ps);
         } catch (SQLException e) {
-            throw new ResourceException(e.toString() + ":" + sql, e);
+            throw wrapSqlException(e, sql);
         }
     }
 	
@@ -122,7 +122,11 @@ public class WorkFlowEventSearchServiceImpl implements WorkFlowEventSearchServic
             params.add(criteriaValue);
         }    	
     }
-    
+
+    private ResourceException wrapSqlException(SQLException e, String sql) {
+        return new ResourceException(e + ":" + sql, e);
+    }
+
 	private DataSource getDataSource() {
 	    return context.getDataSource();
 	}

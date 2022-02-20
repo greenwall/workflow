@@ -35,7 +35,7 @@ public class StringWorkFlowContentSerializer extends DefaultWorkFlowContentSeria
             workflow.setContent((T) t);
             return (T)t;
         } catch (SQLException e) {
-            throw new ResourceException(e.toString() + ":" + sql, e);
+            throw new ResourceException(e + ":" + sql, e);
         }
 
     }
@@ -52,7 +52,7 @@ public class StringWorkFlowContentSerializer extends DefaultWorkFlowContentSeria
             });
             return deserialize(content, String.class);
         } catch (SQLException e) {
-            throw new ResourceException(e.toString() + ":" + sql, e);
+            throw new ResourceException(e + ":" + sql, e);
         }
     }
 	

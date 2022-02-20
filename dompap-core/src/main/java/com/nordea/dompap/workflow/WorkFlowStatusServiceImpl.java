@@ -178,7 +178,7 @@ public class WorkFlowStatusServiceImpl implements WorkFlowStatusService {
         	
             return JdbcUtil.listQuery(ps, new WorkFlowMethodCountMapper(query.getPeriods(), query.isShowMethods()));
         } catch (SQLException e) {
-            throw new ResourceException(e.toString() + ":" + sql, e);
+            throw new ResourceException(e + ":" + sql, e);
         }
     }
 

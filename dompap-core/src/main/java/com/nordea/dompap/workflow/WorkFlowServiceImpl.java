@@ -171,9 +171,9 @@ public class WorkFlowServiceImpl implements WorkFlowService {
 
             WorkFlow<T> wf;
             if (branchId!=null) {
-                wf = new WorkFlow<T>(id, externalKey, workflowInstance.getClass().getName(), userId, branchId, creationTime, lastUpdateTime);
+                wf = new WorkFlow<>(id, externalKey, workflowInstance.getClass().getName(), userId, branchId, creationTime, lastUpdateTime);
             } else {
-                wf = new WorkFlow<T>(id, externalKey, workflowInstance.getClass().getName(), userId, profitCenter, creationTime, lastUpdateTime);
+                wf = new WorkFlow<>(id, externalKey, workflowInstance.getClass().getName(), userId, profitCenter, creationTime, lastUpdateTime);
             }
             wf.setContent(workflowInstance);
             return wf;
@@ -367,7 +367,7 @@ public class WorkFlowServiceImpl implements WorkFlowService {
             ps.execute();
             return ps.getUpdateCount();
         } catch (SQLException e) {
-            throw new ResourceException(e.toString() + ":" + sql, e);
+            throw new ResourceException(e + ":" + sql, e);
         }
     }
     
@@ -464,7 +464,7 @@ public class WorkFlowServiceImpl implements WorkFlowService {
             }
             return ps.executeUpdate();
         } catch (SQLException e) {
-            throw new ResourceException(e.toString() + ":" + sql, e);
+            throw new ResourceException(e + ":" + sql, e);
         }
     }
     
@@ -557,7 +557,7 @@ public class WorkFlowServiceImpl implements WorkFlowService {
 
             return JdbcUtil.countQuery(ps);
         } catch (SQLException e) {
-            throw new ResourceException(e.toString() + ":" + sql, e);
+            throw new ResourceException(e + ":" + sql, e);
         }
 
     }

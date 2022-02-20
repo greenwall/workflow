@@ -10,7 +10,6 @@ import com.nordea.dompap.workflow.event.WorkFlowEventListener;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
-import javax.resource.ResourceException;
 import javax.sql.DataSource;
 import java.lang.reflect.Method;
 import java.sql.Connection;
@@ -44,7 +43,7 @@ public class WorkFlowSelectorSelectForUpdate extends AbstractWorkFlowSelector im
 
 	@SuppressWarnings("unchecked")
 	@Override
-	protected <T> List<WorkFlow<T>> pickReadyMethodWorkFlows(Connection con, String workflowClassName, String subType, ExecutorInfo executorInfo, int maxCount) throws ResourceException, SQLException {
+	protected <T> List<WorkFlow<T>> pickReadyMethodWorkFlows(Connection con, String workflowClassName, String subType, ExecutorInfo executorInfo, int maxCount) throws SQLException {
 		String sql;
 		List<WorkFlow<?>> workflows;
 		Date methodStarted;
@@ -139,7 +138,7 @@ public class WorkFlowSelectorSelectForUpdate extends AbstractWorkFlowSelector im
 
 	@SuppressWarnings("unchecked")
 	@Override
-	protected <T> List<WorkFlow<T>> pickReadyEventWorkFlows(Connection con, String workflowClassName, String subType, ExecutorInfo executorInfo, int maxCount) throws ResourceException, SQLException {
+	protected <T> List<WorkFlow<T>> pickReadyEventWorkFlows(Connection con, String workflowClassName, String subType, ExecutorInfo executorInfo, int maxCount) throws SQLException {
 
 		List<WorkFlow<T>> result;
 		String sql;

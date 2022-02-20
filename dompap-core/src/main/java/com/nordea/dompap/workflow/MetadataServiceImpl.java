@@ -17,7 +17,7 @@ import java.util.Map.Entry;
 @Slf4j
 @RequiredArgsConstructor
 public class MetadataServiceImpl implements MetadataService {
-	private int propertyValueMaxLength=200;
+	private static final int PROPERTY_VALUE_MAX_LENGTH =200;
 
 	private List<PropertyType> propertyTypes;
 	private Map<String, PropertyType> nameTypeMap;
@@ -47,11 +47,11 @@ public class MetadataServiceImpl implements MetadataService {
 				if (StringUtils.isNotBlank(prop.getValue())) {
 					String value = prop.getValue();
 					PropertyType type = prop.getKey();
-					if (value.length()>propertyValueMaxLength) {
+					if (value.length()> PROPERTY_VALUE_MAX_LENGTH) {
 						if (checkPropertyValueLength) {
-							throw new IllegalArgumentException("Property value can not be longer than "+propertyValueMaxLength+" characters ("+value.length()+"): "+type.getName()+"=["+value+"]");
+							throw new IllegalArgumentException("Property value can not be longer than "+ PROPERTY_VALUE_MAX_LENGTH +" characters ("+value.length()+"): "+type.getName()+"=["+value+"]");
 						} else {
-							log.info("Property value longer than "+propertyValueMaxLength+" characters ("+value.length()+"): "+type.getName()+"=["+value+"]");
+							log.info("Property value longer than "+ PROPERTY_VALUE_MAX_LENGTH +" characters ("+value.length()+"): "+type.getName()+"=["+value+"]");
 						}
 					}
 					mp.add(type.getName());
@@ -60,7 +60,7 @@ public class MetadataServiceImpl implements MetadataService {
 					// Execute inserts in batch approximately inserts 10 rows of metadata in half the time
 					ps.setString(1, id.toString());
 					ps.setInt(2, propType.getId());
-					ps.setString(3, StringUtils.left(prop.getValue(), propertyValueMaxLength));
+					ps.setString(3, StringUtils.left(prop.getValue(), PROPERTY_VALUE_MAX_LENGTH));
 					ps.addBatch();			
 				
 				}
@@ -119,17 +119,7 @@ public class MetadataServiceImpl implements MetadataService {
 		return propertyTypes;
 	}
 
-	private PropertyType createPropertyType(String name, String description) throws ResourceException {
-		try (Connection con = getDataSource().getConnection()) {
-			con.setAutoCommit(true);
-			return createPropertyType(con, name, description);
-		} catch (SQLException e) {
-			throw new ResourceException(e.toString(), e);
-		}
-	}
-
 	private PropertyType createPropertyType(Connection con, String name, String description) throws ResourceException {
-		PropertyType type = null;
 		String insertIntoPropertyType = "insert into WFLW_PROPERTYTYPE (ID, NAME, DESCRIPTION) values (?,?,?) ";
 		try {
 			// Select next id
@@ -138,6 +128,7 @@ public class MetadataServiceImpl implements MetadataService {
 			try (PreparedStatement ps = con.prepareStatement(selectMax1FromPropertyType)) {
 				nextId = JdbcUtil.countQuery(ps);
 			}
+			PropertyType type;
 			// Insert
 			try (PreparedStatement ps = con.prepareStatement(insertIntoPropertyType)) {			
 				ps.setInt(1, nextId);
@@ -150,6 +141,7 @@ public class MetadataServiceImpl implements MetadataService {
 			log.info("Property type created: {} {}", type.getId(), type.getName());
 			// Force reload
 			initPropertyTypes(con);
+			return type;
 		} catch (SQLIntegrityConstraintViolationException e) {
 			// Property already inserted - key constraint violation - reload
 			// Force reload
@@ -159,7 +151,6 @@ public class MetadataServiceImpl implements MetadataService {
 		} catch (SQLException e) {
 			throw new ResourceException(e + ":" + insertIntoPropertyType, e);
 		}	
-		return type;
 	}
 
 	@Override

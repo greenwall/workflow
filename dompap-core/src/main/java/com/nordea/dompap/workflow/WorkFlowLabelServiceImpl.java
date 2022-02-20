@@ -47,7 +47,7 @@ public class WorkFlowLabelServiceImpl implements WorkFlowLabelService {
 			log.info("Label "+name+" created.");
 			return label;
 		} catch (SQLException e) {
-	        throw new ResourceException(e.toString() + ":" + sql, e);
+	        throw new ResourceException(e + ":" + sql, e);
 	    }		
 	}
 	
@@ -64,7 +64,7 @@ public class WorkFlowLabelServiceImpl implements WorkFlowLabelService {
 			ps.setString(5, label.getId().toString());
 			ps.execute();
 		} catch (SQLException e) {
-            throw new ResourceException(e.toString() + ":" + sql, e);
+            throw new ResourceException(e + ":" + sql, e);
         }		
 	}
 	
@@ -119,7 +119,7 @@ public class WorkFlowLabelServiceImpl implements WorkFlowLabelService {
 
 			return JdbcUtil.listQuery(ps, workFlowLabelMapper);
         } catch (SQLException e) {
-            throw new ResourceException(e.toString() + ":" + sql, e);
+            throw new ResourceException(e + ":" + sql, e);
         }		
 	}
 	
@@ -131,7 +131,7 @@ public class WorkFlowLabelServiceImpl implements WorkFlowLabelService {
         	ps.setString(1, id.toString());
             return JdbcUtil.exactQuery(ps, workFlowLabelMapper);
         } catch (SQLException e) {
-            throw new ResourceException(e.toString() + ":" + sql, e);
+            throw new ResourceException(e + ":" + sql, e);
         }				
 	}
 
@@ -153,7 +153,7 @@ public class WorkFlowLabelServiceImpl implements WorkFlowLabelService {
 			con.commit();
         	return rows;
         } catch (SQLException e) {
-            throw new ResourceException(e.toString() + ":" + sql, e);
+            throw new ResourceException(e + ":" + sql, e);
         }				
     }
 
@@ -173,7 +173,7 @@ public class WorkFlowLabelServiceImpl implements WorkFlowLabelService {
 			con.commit();
         	return rows;
         } catch (SQLException e) {
-            throw new ResourceException(e.toString() + ":" + sql, e);
+            throw new ResourceException(e + ":" + sql, e);
         }				
 	}
 	
@@ -203,7 +203,7 @@ public class WorkFlowLabelServiceImpl implements WorkFlowLabelService {
 
 			log.info("Label "+label.getName()+" deleted and removed from "+rows+" workflows.");
         } catch (SQLException e) {
-            throw new ResourceException(e.toString() + ":" + sql, e);
+            throw new ResourceException(e + ":" + sql, e);
         }		
 	}
 
