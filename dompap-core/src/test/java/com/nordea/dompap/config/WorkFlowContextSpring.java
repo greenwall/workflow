@@ -1,24 +1,13 @@
 package com.nordea.dompap.config;
 
 import com.nordea.dompap.workflow.*;
-import com.nordea.dompap.workflow.config.WorkFlowConfig;
-import com.nordea.dompap.workflow.config.WorkFlowContext;
 import com.nordea.dompap.workflow.event.WorkFlowEventService;
 import com.nordea.dompap.workflow.event.WorkFlowEventServiceImpl;
 import com.nordea.dompap.workflow.selector.WorkFlowSelector;
 import com.nordea.dompap.workflow.selector.WorkFlowSelectorImpl;
-import lombok.Data;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.Value;
-import org.apache.commons.dbcp.BasicDataSource;
-import org.springframework.boot.SpringBootConfiguration;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
-import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.stereotype.Component;
 
@@ -28,7 +17,7 @@ import javax.sql.DataSource;
 @Value
 @ConfigurationPropertiesScan("com.nordea.dompap.config")
 @Import({WorkFlowConfigSpring.class, WorkFlowDataSourceConfiguration.class})
-public class WorkFlowContextSpring implements WorkFlowContext {
+public class WorkFlowContextSpring {
 
     private WorkFlowConfigSpring workFlowConfig;
 

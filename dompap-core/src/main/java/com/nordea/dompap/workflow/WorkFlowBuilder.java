@@ -10,7 +10,6 @@ import java.util.UUID;
 
 /**
  * Helper class for setting parameters for starting a workflow. 
- * @author G93283
  * @param <T>
  */
 public class WorkFlowBuilder<T> {

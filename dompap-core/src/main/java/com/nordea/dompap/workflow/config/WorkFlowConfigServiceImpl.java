@@ -13,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 public class WorkFlowConfigServiceImpl implements WorkFlowConfigService {
 
-	final WorkFlowContext context;
+	final DataSource dataSource;
 
 	@Override
 	public List<WorkFlowClassServer> getWorkFlowClassServers(String className, String serverName, Boolean enabled) throws ResourceException {
@@ -109,7 +109,7 @@ public class WorkFlowConfigServiceImpl implements WorkFlowConfigService {
 	private static final JdbcUtil.RowMapper<String> stringMapper = (rs, rowNum) -> rs.getString("WORKFLOW_CLASS");
 
 	private DataSource getDataSource() {
-		return context.getDataSource();
+		return dataSource;
 	}
 
 }

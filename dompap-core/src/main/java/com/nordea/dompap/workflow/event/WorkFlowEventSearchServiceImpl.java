@@ -1,7 +1,6 @@
 package com.nordea.dompap.workflow.event;
 
 import com.nordea.dompap.jdbc.JdbcUtil;
-import com.nordea.dompap.workflow.config.WorkFlowContext;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -17,7 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class WorkFlowEventSearchServiceImpl implements WorkFlowEventSearchService {
 
-    private final WorkFlowContext context;
+    private final DataSource dataSource;
 
 	@Override
 	public WorkFlowEventSearchResult searchEvents(WorkFlowEventSearch search, Integer startRow, Integer maxRows) throws ResourceException {
@@ -128,7 +127,7 @@ public class WorkFlowEventSearchServiceImpl implements WorkFlowEventSearchServic
     }
 
 	private DataSource getDataSource() {
-	    return context.getDataSource();
+	    return dataSource;
 	}
 	
 }

@@ -3,9 +3,9 @@ package com.nordea.dompap.workflow;
 /**
  * Export all workflows with eBoks time
  * TODO - only first draft of query is written.
- * @author G93283
- *
+ * @deprecated
  */
+@Deprecated
 public class WorkFlowExport {
 	
 /*

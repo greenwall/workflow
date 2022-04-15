@@ -1,6 +1,6 @@
 package com.nordea.dompap.workflow;
 
-import com.nordea.dompap.workflow.config.WorkFlowContext;
+import com.nordea.dompap.workflow.config.WorkFlowConfig;
 import com.nordea.next.dompap.domain.BranchId;
 import org.junit.Ignore;
 import org.junit.jupiter.api.Assertions;
@@ -26,7 +26,9 @@ import static org.junit.Assert.assertNull;
 public class DefaultWorkFlowControllerTest {
 
 	@Autowired
-	private WorkFlowContext context;
+	private WorkFlowConfig workFlowConfig;
+	@Autowired
+	private WorkFlowManager workFlowManager;
 
 	// TODO Fix
 	private DefaultWorkFlowController defaultWorkFlowController; // = new DefaultWorkFlowController(null, null);
@@ -42,7 +44,7 @@ public class DefaultWorkFlowControllerTest {
 	
     @BeforeEach
 	public void init() {
-		defaultWorkFlowController = new DefaultWorkFlowController(context.getWorkFlowConfig(), context.getWorkFlowManager());
+		defaultWorkFlowController = new DefaultWorkFlowController(workFlowConfig, workFlowManager);
 		workflow.setContent(this);
 	}
 
@@ -72,11 +74,11 @@ public class DefaultWorkFlowControllerTest {
 
 	@Test
 	public void testRetryOnExceptionWithMessage() {
-    	Assertions.assertNotNull(context);
-    	Assertions.assertNotNull(context.getWorkFlowConfig());
+//    	Assertions.assertNotNull(context);
+    	Assertions.assertNotNull(workFlowConfig);
 		//DefaultWorkFlowController.TestWorkFlow.doB.retryMinutes=1,2,3,4
-		Assertions.assertEquals("1,2,3,4", context.getWorkFlowConfig().getControllerConfig("DefaultWorkFlowController.TestWorkFlow.doB.retryMinutes"));
-    	System.out.println(context.getWorkFlowConfig());
+		Assertions.assertEquals("1,2,3,4", workFlowConfig.getControllerConfig("DefaultWorkFlowController.TestWorkFlow.doB.retryMinutes"));
+    	System.out.println(workFlowConfig);
 
 		//DefaultWorkFlowController.onFail.DefaultWorkFlowControllerTest.failingMethod(RuntimeException).resumeAt=some-message:retryMethod
 		Assertions.assertEquals(retryMethod, defaultWorkFlowController.getOnFail(workflow, failingMethod, new RuntimeException("some-message"), failingMethod));

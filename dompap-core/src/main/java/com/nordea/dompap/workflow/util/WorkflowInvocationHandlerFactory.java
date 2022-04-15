@@ -1,4 +1,4 @@
-package com.nordea.dompap.util;
+package com.nordea.dompap.workflow.util;
 
 import java.lang.reflect.Proxy;
 

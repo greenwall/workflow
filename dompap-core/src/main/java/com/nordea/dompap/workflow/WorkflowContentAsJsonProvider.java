@@ -4,7 +4,6 @@ import javax.resource.ResourceException;
 
 /**
  * The interface for getting the workflow content in a formatted way
- * @author g20446
  */
 public interface WorkflowContentAsJsonProvider {
     /**

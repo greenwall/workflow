@@ -14,7 +14,6 @@ import java.util.UUID;
 /**
  * Default serializer uses Java built-in serialization (requiring entire content to be Serializable).
  * Loading and storing of serialized byte array is from table WFLW_WORKFLOW_CONTENT (ID, CONTENT).  
- * @author G93283
  */
 public class DefaultWorkFlowContentSerializer implements WorkFlowContentSerializer {
 	
@@ -35,7 +34,7 @@ public class DefaultWorkFlowContentSerializer implements WorkFlowContentSerializ
             workflow.setContent(t);
             return t;
         } catch (SQLException e) {
-            throw new ResourceException(e.toString() + ":" + sql, e);
+            throw new ResourceException(e + ":" + sql, e);
         }
 
     }
@@ -62,7 +61,7 @@ public class DefaultWorkFlowContentSerializer implements WorkFlowContentSerializ
             ps.execute();
 
         } catch (SQLException e) {
-            throw new ResourceException(e.toString() + ":" + sql, e);
+            throw new ResourceException(e + ":" + sql, e);
         }
 
     }
@@ -81,7 +80,7 @@ public class DefaultWorkFlowContentSerializer implements WorkFlowContentSerializ
 				ps.execute();
 			}
 	    } catch (SQLException e) {
-	        throw new ResourceException(e.toString() + ":" + sql, e);
+	        throw new ResourceException(e + ":" + sql, e);
 	    }
 	}
 

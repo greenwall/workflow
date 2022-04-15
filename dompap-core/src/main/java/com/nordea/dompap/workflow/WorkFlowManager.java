@@ -1,6 +1,6 @@
 package com.nordea.dompap.workflow;
 
-import com.nordea.dompap.util.WorkflowProcessingStatus;
+import com.nordea.dompap.workflow.util.WorkflowProcessingStatus;
 import com.nordea.next.dompap.domain.BranchId;
 import com.nordea.next.dompap.domain.UserId;
 

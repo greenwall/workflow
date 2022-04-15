@@ -1,8 +1,6 @@
 package com.nordea.dompap.workflow.selector;
 
 import com.nordea.dompap.workflow.config.WorkFlowConfig;
-import com.nordea.dompap.workflow.config.WorkFlowContext;
-import lombok.RequiredArgsConstructor;
 
 import javax.sql.DataSource;
 

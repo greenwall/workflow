@@ -18,7 +18,6 @@ import java.util.UUID;
  * excludeLabelled - excludes workflows that have a non-expired label marked as excluding from summary.
  * 
  * Implements Serializable to allow storing in user session
- * @author G93283
  */
 @Data
 public class WorkFlowStatusQuery implements Serializable {

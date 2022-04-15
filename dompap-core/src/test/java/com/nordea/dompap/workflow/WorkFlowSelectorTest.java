@@ -174,7 +174,7 @@ public class WorkFlowSelectorTest extends TestWithMemoryDB {
 		}
 		
 		UUID id2 = UUID.randomUUID();
-		workFlowService.insertWorkFlow(id2, "TEST1", new UserId("X00000"), "requestDomain", new BranchId("1111"), myworkflow, null, WorkFlowUtil.getMethod(MyWorkflow.class, "doStuff"), new Date(), wfMetadata , wfController);
+		workFlowService.insertWorkFlow(id2, "TEST2", new UserId("X00000"), "requestDomain", new BranchId("1111"), myworkflow, null, WorkFlowUtil.getMethod(MyWorkflow.class, "doStuff"), new Date(), wfMetadata , wfController);
 		{
 			// Select workflow with other subtype 
 			WorkFlow<?> selected = selector.pickReadyWorkFlow(myworkflow.getClass().getName(), "", executorInto);
@@ -182,7 +182,7 @@ public class WorkFlowSelectorTest extends TestWithMemoryDB {
 		}
 
 		UUID id3 = UUID.randomUUID();
-		workFlowService.insertWorkFlow(id3, "TEST1", new UserId("X00000"), "requestDomain", new BranchId("1111"), myworkflow, null, WorkFlowUtil.getMethod(MyWorkflow.class, "doStuff"), new Date(), wfMetadata , wfController);
+		workFlowService.insertWorkFlow(id3, "TEST3", new UserId("X00000"), "requestDomain", new BranchId("1111"), myworkflow, null, WorkFlowUtil.getMethod(MyWorkflow.class, "doStuff"), new Date(), wfMetadata , wfController);
 		{
 			// Select workflow with other subtype 
 			WorkFlow<?> selected = selector.pickReadyWorkFlow(myworkflow.getClass().getName(), null, executorInto);

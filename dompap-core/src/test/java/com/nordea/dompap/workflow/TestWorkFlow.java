@@ -9,6 +9,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.nordea.dompap.workflow.WorkFlowUtil.*;
+
 @Slf4j
 public class TestWorkFlow implements Serializable {
 
@@ -33,7 +35,8 @@ public class TestWorkFlow implements Serializable {
 		}
 		bytes = blob;
 	}
-	
+
+	public static Method doA = getMethod(TestWorkFlow.class, "doA");
 	public Method doA(WorkFlow wf) {
 		log.info("doing doA");
 		
@@ -43,9 +46,10 @@ public class TestWorkFlow implements Serializable {
 			throw new NullPointerException("Test exception from doA- n="+n);
 		}
 		s = s + "doA("+n+")";
-		return WorkFlowUtil.getMethod(this, "doB");
+		return doB;
 	}
 
+	private static Method doB = getMethod(TestWorkFlow.class, "doB");
 	public Method doB() {
 		log.info("doing doB");
 		if (n%3 ==1) {
@@ -58,19 +62,21 @@ public class TestWorkFlow implements Serializable {
 
 		if (n%2 == 0) {
 			log.info("continuing to doC, because n="+n);
-			return WorkFlowUtil.getMethod(this, "doC");
+			return doC;
 		} else {
 			log.info("ending, because n="+n);
 			return null;
 		}
 	}
 
+	private static Method doC = getMethod(TestWorkFlow.class, "doC");
 	@FinalState(archiveAfterDays=3)
 	public Method doC() {
 		log.info("doing doC");
 		return null;
 	}
-	
+
+	public static Method doException = getMethod(TestWorkFlow.class, "doException");
 	public Method doException() throws Exception {
 		// Throw nested exception
 		try {

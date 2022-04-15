@@ -12,8 +12,6 @@ import java.util.UUID;
  * Service for workflow metadata. 
  * Caches the property types to maintain a unique sequential id for all metadata types.
  * Used by WorkFlowService and from Metadata.
- * @author G93283
- *
  */
 public interface MetadataService {
 

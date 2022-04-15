@@ -28,7 +28,7 @@ import java.util.Date;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.concurrent.TimeUnit;
-// TODO All JDBC related code should move to DAO class
+
 @Slf4j
 @RequiredArgsConstructor
 public class WorkFlowServiceImpl implements WorkFlowService {
@@ -796,17 +796,7 @@ public class WorkFlowServiceImpl implements WorkFlowService {
             }
         }
     }
-    // TODO Why load content from specific datasource?
-/*
-    @Override
-    public String getWorkflowContent(UUID uuid, String dataSource) throws ResourceException {
-        try (Connection con = getSpecificDataSource(dataSource).getConnection()) {
-            return new StringWorkFlowContentSerializer().getWorkFlowContent(con, uuid);
-        } catch (SQLException e) {
-            throw new ResourceException(e.toString(), e);
-        }
-    }
-*/
+
     @Override
     public <T> T loadWorkFlowContent(WorkFlow<T> workflow) throws ResourceException, ClassNotFoundException, IOException {
         WorkFlowContentSerializer contentSerializer = getSerializerForWorkFlow(workflow.getWorkflowClassName());

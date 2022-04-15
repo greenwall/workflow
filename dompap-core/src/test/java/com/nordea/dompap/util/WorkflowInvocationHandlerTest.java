@@ -1,5 +1,6 @@
 package com.nordea.dompap.util;
 
+import com.nordea.dompap.workflow.util.WorkflowInvocationHandlerFactory;
 import org.junit.Assert;
 import org.junit.Test;
 

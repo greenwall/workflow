@@ -1,11 +1,10 @@
 package com.nordea.dompap.workflow;
 
-import com.nordea.dompap.workflow.config.WorkFlowContext;
+import com.nordea.dompap.workflow.config.WorkFlowConfig;
 import com.nordea.next.dompap.domain.BranchId;
 import com.nordea.next.dompap.domain.UserId;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
@@ -23,16 +22,20 @@ public class WorkflowDatabaseTest extends TestWithMemoryDB {
 	private static final String NEW_EXTERNAL_KEY = "TEST2";
 
 	@Autowired
-	private WorkFlowContext context;
+	private WorkFlowService workFlowService;
+	@Autowired
+	private WorkFlowConfig workFlowConfig;
+	@Autowired
+	private WorkFlowManager workFlowManager;
 
 	@Test
 	public void insertUpdateWorkflow() throws ResourceException, IOException, ClassNotFoundException {
 		MyWorkflow wf = new MyWorkflow();
-		WorkFlowService service = context.getWorkFlowService();
+		WorkFlowService service = workFlowService;
 		UUID id = UUID.randomUUID();
 		Metadata wfMetadata = new Metadata(null);
 		wfMetadata.putProperty(new PropertyType("PROPERTY", null), "VALUE");
-		DefaultWorkFlowController wfController = new DefaultWorkFlowController(context.getWorkFlowConfig(), context.getWorkFlowManager());
+		DefaultWorkFlowController wfController = new DefaultWorkFlowController(workFlowConfig, workFlowManager);
 		WorkFlowBuilder<MyWorkflow> builder = new WorkFlowBuilder<>();
 		builder.id(id)
 			.externalKey("TEST1")

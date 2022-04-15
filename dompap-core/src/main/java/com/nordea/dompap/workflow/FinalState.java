@@ -8,7 +8,6 @@ import java.lang.annotation.Target;
 
 /**
  * Annotation to mark the final state of a workflow and optionally defining after how many days it should be archived (default 30). 
- * @author G93283
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)

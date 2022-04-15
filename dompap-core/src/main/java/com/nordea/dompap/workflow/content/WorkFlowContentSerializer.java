@@ -11,7 +11,6 @@ import java.util.UUID;
 /**
  * Interface for saving and loading workflow content.
  * If workflow content is to be stored/loaded from other tables implement this and configure for that workflow.
- * @author G93283
  */
 public interface WorkFlowContentSerializer {
 

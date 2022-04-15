@@ -13,11 +13,7 @@ import com.google.gson.JsonSerializer;
 import com.nordea.next.dompap.domain.type.NetBankCustomerId;
 import com.nordea.next.dompap.domain.type.factory.NetBankCustomerIdFactory;
 import com.nordea.next.dompap.domain.type.fi.NetBankCustomerId_FI;
-/**
- * 
- * @author G90511(Hitesh Karel)
- *
- */
+
 public class GsonNetBankCustomerIdSerializer
         implements JsonSerializer<NetBankCustomerId>, JsonDeserializer<NetBankCustomerId> {
 
@@ -27,9 +23,6 @@ public class GsonNetBankCustomerIdSerializer
         JsonObject jsonObject = json.getAsJsonObject();
         Optional<JsonElement> country = Optional.of(jsonObject.get("country"));
         Optional<JsonElement> number = Optional.of(jsonObject.get("number"));
-        if (!country.isPresent() || !number.isPresent()) {
-            throw new IllegalArgumentException("Unable to deserialize, either country or netbankId is null");
-        }
         return new NetBankCustomerIdFactory(country.get().getAsString()).create(number.get().getAsString());
     }
 

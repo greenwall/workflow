@@ -1,7 +1,5 @@
 package com.nordea.dompap.workflow;
 
-import com.nordea.dompap.workflow.config.WorkFlowContext;
-
 import javax.resource.ResourceException;
 import java.io.Serializable;
 import java.lang.reflect.Method;
@@ -14,8 +12,6 @@ import java.util.Date;
  * The state is stored (serialized) after returning from onComplete or onFail
  *  
  * The Controller must be Serializable in order for its state to be persisted.
- * 
- * @author G93283
  */
 public interface WorkFlowController extends Serializable {
 	

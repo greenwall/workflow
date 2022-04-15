@@ -1,4 +1,4 @@
-package com.nordea.dompap.util;
+package com.nordea.dompap.workflow.util;
 
 public enum WorkflowProcessingStatus {
     idle,       // Not more work for this workflow class

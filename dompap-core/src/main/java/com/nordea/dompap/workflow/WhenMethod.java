@@ -7,7 +7,6 @@ import org.joda.time.DateTime;
 
 /**
  * Holds information about when to execute the next method on a workflow
- * @author G93283
  */
 public class WhenMethod {
     public final Method method;

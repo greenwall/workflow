@@ -12,14 +12,11 @@ import java.util.Properties;
  * Serializer requiring workflow content to be exposed as properties, by implementing ContentProperties.
  * Further workflow content class must have an empty constructor.
  * Loading and storing of corresponding properties is from table WFLW_WORKFLOW_CONTENT (ID, CONTENT).  
- * @author G93283
  */
 public class PropertiesWorkFlowContentSerializer extends DefaultWorkFlowContentSerializer {
 
 	/** 
 	 * WorkflowContent implements to allow loading and storing as properties
-	 * @author G93283
-	 *
 	 */
 	public interface ContentProperties {
 		/**

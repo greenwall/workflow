@@ -33,10 +33,7 @@
         <module>dompap-workflow-parent</module>
         <!-- Parent project for REST services projects without workflows -->
         <module>dompap-rest-service-parent</module>
-		<!-- WARNING!!! Temporary excluded to conclude the release -->
-        <!-- module>dompap-perftest</module -->
         <module>dompap-jdbc</module>
-        <!--module>dompap-workflow-spring-example</module-->
 	</modules>
 	
 	<build>

@@ -1,7 +1,7 @@
 package com.nordea.dompap.workflow;
 
 import com.google.common.base.MoreObjects;
-import com.nordea.dompap.util.WorkflowProcessingStatus;
+import com.nordea.dompap.workflow.util.WorkflowProcessingStatus;
 import com.nordea.dompap.workflow.config.WorkFlowConfig;
 import com.nordea.dompap.workflow.content.StringWorkFlowContentSerializer;
 import com.nordea.dompap.workflow.content.WorkFlowContentSerializer;
@@ -352,14 +352,10 @@ public class WorkFlowManagerImpl implements WorkFlowManager {
                     // Abort execution, since controller called resumeAt.
                     return workflow;
                 }
-                
+
                 // Execute method and get next method.
                 executeTimer = new WorkFlowTimer(workflow, step);
-            	if (methodHasWorkFlowParameter(step)) {
-            		nextMethod = mapToWhenMethod(step.invoke(workflow.getContent(), workflow));
-            	} else {
-            		nextMethod = mapToWhenMethod(step.invoke(workflow.getContent()));
-            	}
+                nextMethod = executeStep(workflow, step);
             	executeTimer.logTime("execute");
             	
                 // Store workflow with endTime and content.
@@ -436,10 +432,19 @@ public class WorkFlowManagerImpl implements WorkFlowManager {
 
         return workflow;
     }
-    
+
+    private WhenMethod executeStep(WorkFlow workflow, Method step) throws InvocationTargetException, IllegalAccessException {
+
+        if (methodHasWorkFlowParameter(step)) {
+            return mapToWhenMethod(step.invoke(workflow.getContent(), workflow));
+        } else {
+            return mapToWhenMethod(step.invoke(workflow.getContent()));
+        }
+    }
+
     private static boolean methodHasWorkFlowParameter(Method step) {
         Class<?>[] parameterTypes = step.getParameterTypes();
-        return parameterTypes.length==1 && parameterTypes[0].equals(WorkFlow.class);    	
+        return parameterTypes.length==1 && parameterTypes[0].equals(WorkFlow.class);
     }
 
     private static WhenMethod mapToWhenMethod(Object returnValue) {

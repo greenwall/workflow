@@ -15,7 +15,6 @@ import java.util.UUID;
 /**
  * Serializer loading workflow content as a String, by implementing ContentProperties.
  * Loading and storing to/from table WFLW_WORKFLOW_CONTENT (ID, CONTENT).  
- * @author G93283
  */
 public class StringWorkFlowContentSerializer extends DefaultWorkFlowContentSerializer {
 

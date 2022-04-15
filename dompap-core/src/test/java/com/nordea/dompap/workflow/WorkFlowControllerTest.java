@@ -1,17 +1,14 @@
 package com.nordea.dompap.workflow;
 
 import com.nordea.dompap.workflow.config.WorkFlowConfig;
-import com.nordea.dompap.workflow.config.WorkFlowContext;
 import com.nordea.next.dompap.domain.BranchId;
 import com.nordea.next.dompap.domain.UserId;
 import org.apache.commons.lang.reflect.MethodUtils;
-import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 

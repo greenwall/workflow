@@ -6,8 +6,6 @@ import javax.resource.ResourceException;
 
 /**
  * Read active workflow classes on server
- * @author G93283
- *
  */
 public interface WorkFlowConfigService {
 	/**

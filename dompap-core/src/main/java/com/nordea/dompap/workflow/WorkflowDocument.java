@@ -4,8 +4,9 @@ import javax.resource.ResourceException;
 
 /**
  * The interface for generic checking document is present and getting the document.
- * @author g20446
+ * @deprecated
  */
+@Deprecated
 public interface WorkflowDocument {
 	/**
 	 * Returns true if document is ready for viewing

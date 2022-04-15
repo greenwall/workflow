@@ -10,6 +10,8 @@ import org.joda.time.DateTime;
 
 import com.nordea.dompap.workflow.event.WorkFlowEventService;
 
+import static com.nordea.dompap.workflow.WorkFlowUtil.*;
+
 /**
  * TestWorkflow2 that sends an event to itself and schedules stepC for execution after 30 days, but expect the event to execute instead. 
  */
@@ -18,14 +20,12 @@ public class TestWorkflow2 implements Serializable {
 	public String some = "Some";
 	UUID id;
 
-	public static final WhenMethod stepA = WorkFlowUtil.getWhenMethod(TestWorkflow2.class, "stepA", null);
-	private static final WhenMethod stepB = WorkFlowUtil.getWhenMethod(TestWorkflow2.class, "stepB", null);
-	private static final WhenMethod stepC = WorkFlowUtil.getWhenMethod(TestWorkflow2.class, "stepC", null);
-	
+	public static final WhenMethod stepA = getWhenMethod(TestWorkflow2.class, "stepA", null);
 	public WhenMethod stepA() {
 		return stepB;
 	}
-	
+
+	private static final WhenMethod stepB = getWhenMethod(TestWorkflow2.class, "stepB", null);
 	public WhenMethod stepB(WorkFlow workflow) throws ResourceException  {
 		// Send an event and schedule execution of stepC - event should get executed
 //		WorkFlow<?> workflow = ServiceFactory.getService(WorkFlowService.class).getWorkFlow(id);
@@ -37,7 +37,8 @@ public class TestWorkflow2 implements Serializable {
 		
 		return stepC.when(DateTime.now().plusDays(30)).orEvent();
 	}
-	
+
+	private static final WhenMethod stepC = getWhenMethod(TestWorkflow2.class, "stepC", null);
 	public WhenMethod stepC() {
 		return null;
 	}

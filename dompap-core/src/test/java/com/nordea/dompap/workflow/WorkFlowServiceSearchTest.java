@@ -89,7 +89,8 @@ public class WorkFlowServiceSearchTest extends TestWithMemoryDB {
 			search.setBranchId(branchId);			
 			search.setWorkFlowClass(TestWorkFlow.class);
 			WorkFlowSearchResult result = workFlowService.searchWorkFlows(search, 0, 10);
-			assertEquals(w3.getId(), result.workflows.get(0).getId());
+			assertEquals(3, result.totalWorkflows);
+			assertTrue(result.workflows.stream().anyMatch(w->w.getId().equals(w3.getId())));
 		}
 
 		{

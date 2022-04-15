@@ -4,8 +4,6 @@ import javax.resource.ResourceException;
 
 /**
  * Allows searching events.
- *  
- * @author G93283
  */
 public interface WorkFlowEventSearchService {
 
