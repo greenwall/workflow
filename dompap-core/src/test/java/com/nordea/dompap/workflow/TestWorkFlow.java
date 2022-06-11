@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.nordea.dompap.workflow.WorkFlowUtil.*;
+import static com.nordea.dompap.workflow.WorkflowUtil.*;
 
 @Slf4j
 public class TestWorkFlow implements Serializable {
@@ -37,7 +37,7 @@ public class TestWorkFlow implements Serializable {
 	}
 
 	public static Method doA = getMethod(TestWorkFlow.class, "doA");
-	public Method doA(WorkFlow wf) {
+	public Method doA(Workflow wf) {
 		log.info("doing doA");
 		
 		myId = wf.getId().toString();

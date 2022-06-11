@@ -1,6 +1,6 @@
 package com.nordea.dompap.workflow;
 
-import com.nordea.dompap.workflow.config.WorkFlowConfig;
+import com.nordea.dompap.workflow.config.WorkflowConfig;
 import com.nordea.next.dompap.domain.BranchId;
 import com.nordea.next.dompap.domain.UserId;
 import org.junit.jupiter.api.Test;
@@ -22,37 +22,37 @@ public class WorkflowDatabaseTest extends TestWithMemoryDB {
 	private static final String NEW_EXTERNAL_KEY = "TEST2";
 
 	@Autowired
-	private WorkFlowService workFlowService;
+	private WorkflowService workFlowService;
 	@Autowired
-	private WorkFlowConfig workFlowConfig;
+	private WorkflowConfig workFlowConfig;
 	@Autowired
-	private WorkFlowManager workFlowManager;
+	private WorkflowManager workFlowManager;
 
 	@Test
 	public void insertUpdateWorkflow() throws ResourceException, IOException, ClassNotFoundException {
 		MyWorkflow wf = new MyWorkflow();
-		WorkFlowService service = workFlowService;
+		WorkflowService service = workFlowService;
 		UUID id = UUID.randomUUID();
 		Metadata wfMetadata = new Metadata(null);
 		wfMetadata.putProperty(new PropertyType("PROPERTY", null), "VALUE");
-		DefaultWorkFlowController wfController = new DefaultWorkFlowController(workFlowConfig, workFlowManager);
-		WorkFlowBuilder<MyWorkflow> builder = new WorkFlowBuilder<>();
+		DefaultWorkflowController wfController = new DefaultWorkflowController(workFlowConfig, workFlowManager);
+		WorkflowBuilder<MyWorkflow> builder = new WorkflowBuilder<>();
 		builder.id(id)
 			.externalKey("TEST1")
 			.userId(new UserId("X00000"))
 			.requestDomain("FI")
 			.branchId(new BranchId("1111"))
 			.workflow(wf)
-			.methodName(WorkFlowUtil.getMethod(MyWorkflow.class, "doStuff").getName())
+			.methodName(WorkflowUtil.getMethod(MyWorkflow.class, "doStuff").getName())
 			.startWhen(new Date())
 			.metadata(wfMetadata)
 			.controller(wfController);
 		service.insertWorkFlow(builder);
 //		service.insertWorkFlow(id, "TEST1", new UserId("X00000"), "FI", new BranchId("1111"), wf, WorkFlowUtil.getMethod(MyWorkflow.class, "doStuff"), new Date(), wfMetadata , wfController);
-		WorkFlow<?> workflow = service.getWorkFlow(id);
+		Workflow<?> workflow = service.getWorkFlow(id);
 		Object content = service.loadWorkFlowContent(workflow);
 		assertEquals(wf, content, "Workflow content not equal");
-		WorkFlowController controller = service.loadWorkFlowController(workflow);
+		WorkflowController controller = service.loadWorkFlowController(workflow);
 		assertEquals(wfController, controller, "Workflow controller not equal");
 		Metadata metadata = service.loadWorkFlowMetadata(workflow);
 		System.out.println(wfMetadata);
@@ -63,7 +63,7 @@ public class WorkflowDatabaseTest extends TestWithMemoryDB {
 		workflow = service.getWorkFlow(id);
 		assertEquals(NEW_EXTERNAL_KEY, workflow.getExternalKey(), "External key not updated");
 		
-		service.updateWorkFlow(workflow, WorkFlowUtil.getMethod(MyWorkflow.class, DO_STUFF2), new Date(), new Date(), new Date(), null, metadata);
+		service.updateWorkFlow(workflow, WorkflowUtil.getMethod(MyWorkflow.class, DO_STUFF2), new Date(), new Date(), new Date(), null, metadata);
 		workflow = service.getWorkFlow(id);
 		assertEquals(DO_STUFF2, workflow.getMethodName(), "Method name not updated");
 	}

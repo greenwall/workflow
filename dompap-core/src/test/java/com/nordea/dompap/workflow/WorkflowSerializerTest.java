@@ -1,8 +1,7 @@
 package com.nordea.dompap.workflow;
 
-import com.nordea.dompap.workflow.content.GsonWorkFlowContentSerializer;
+import com.nordea.dompap.workflow.content.GsonWorkflowContentSerializer;
 import com.nordea.next.dompap.workflow.Activity;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -18,7 +17,7 @@ public class WorkflowSerializerTest {
 		private String value = "Some value";
 	}
 
-	public class MySerializer extends GsonWorkFlowContentSerializer {
+	public class MySerializer extends GsonWorkflowContentSerializer {
 		@Override
 		public <T> byte[] serialize(T workflowContent) throws IOException {
 			return super.serialize(workflowContent);

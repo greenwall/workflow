@@ -1,6 +1,6 @@
 package com.nordea.dompap.workflow;
 
-import com.nordea.dompap.workflow.config.WorkFlowConfig;
+import com.nordea.dompap.workflow.config.WorkflowConfig;
 import com.nordea.next.dompap.domain.BranchId;
 import com.nordea.next.dompap.domain.UserId;
 import org.apache.commons.lang.reflect.MethodUtils;
@@ -31,9 +31,9 @@ import static org.mockito.Mockito.verify;
 public class WorkFlowControllerTest extends TestWithMemoryDB {
 
 	@Autowired
-	WorkFlowConfig workFlowConfig;
+	WorkflowConfig workFlowConfig;
 	@Autowired
-	WorkFlowManager workFlowManager;
+	WorkflowManager workFlowManager;
 
     @SuppressWarnings("unused")
 	public void methodA() {    	
@@ -46,10 +46,10 @@ public class WorkFlowControllerTest extends TestWithMemoryDB {
 	@SuppressWarnings("unchecked")
     @Test
 	public void testGiveUp() throws ResourceException {
-		WorkFlowManager workflowManagerMock = Mockito.mock(WorkFlowManager.class);
-	    DefaultWorkFlowController ctrl = new DefaultWorkFlowController(workFlowConfig, workflowManagerMock);
+		WorkflowManager workflowManagerMock = Mockito.mock(WorkflowManager.class);
+	    DefaultWorkflowController ctrl = new DefaultWorkflowController(workFlowConfig, workflowManagerMock);
 
-        WorkFlow<?> workflow = new WorkFlow<>(UUID.randomUUID(), "key", "no-class", null, (BranchId)null, new Date(), null);
+        Workflow<?> workflow = new Workflow<>(UUID.randomUUID(), "key", "no-class", null, (BranchId)null, new Date(), null);
         Method methodExecuted = MethodUtils.getAccessibleMethod(this.getClass(), "methodA", new Class[] {});
 
         ctrl.onFail(workflow, methodExecuted, new NullPointerException());
@@ -81,10 +81,10 @@ public class WorkFlowControllerTest extends TestWithMemoryDB {
 
 	@Test
 	public void testGiveUp_workflow_method() throws ResourceException {
-		WorkFlowManager workflowManager = Mockito.mock(WorkFlowManager.class);
-		DefaultWorkFlowController ctrl = new DefaultWorkFlowController(workFlowConfig, workflowManager);
+		WorkflowManager workflowManager = Mockito.mock(WorkflowManager.class);
+		DefaultWorkflowController ctrl = new DefaultWorkflowController(workFlowConfig, workflowManager);
 
-		WorkFlow<TestWorkFlow> workflow = new WorkFlow<>(UUID.randomUUID(), "key", "com.nordea.branchchannel.dpap.workflow.TestWorkFlow", null, (BranchId) null, new Date(), null);
+		Workflow<TestWorkFlow> workflow = new Workflow<>(UUID.randomUUID(), "key", "com.nordea.branchchannel.dpap.workflow.TestWorkFlow", null, (BranchId) null, new Date(), null);
 		workflow.setMethodName("doB");
 		Method methodExecuted = MethodUtils.getAccessibleMethod(TestWorkFlow.class, "doB", new Class[]{});
 		Method otherMethod = MethodUtils.getAccessibleMethod(TestWorkFlow.class, "doX", new Class[]{});
@@ -117,13 +117,13 @@ public class WorkFlowControllerTest extends TestWithMemoryDB {
 
 	 @Test
      public void testGiveUp_workflow_method_with_subType() throws ResourceException {
-		 WorkFlowManager workflowManagerMock = Mockito.mock(WorkFlowManager.class);
-         DefaultWorkFlowController ctrl = new DefaultWorkFlowController(workFlowConfig, workflowManagerMock);
+		 WorkflowManager workflowManagerMock = Mockito.mock(WorkflowManager.class);
+         DefaultWorkflowController ctrl = new DefaultWorkflowController(workFlowConfig, workflowManagerMock);
 
-         WorkFlow<TestWorkFlow> workflow = new WorkFlow<>(UUID.randomUUID(), "key", "com.nordea.branchchannel.dpap.workflow.TestWorkFlow", "mylocal", null, (BranchId) null, new Date(), null);
+         Workflow<TestWorkFlow> workflow = new Workflow<>(UUID.randomUUID(), "key", TestWorkFlow.class.getName(), "mylocal", null, (BranchId) null, new Date(), null);
          workflow.setMethodName("doB");
-         Method methodExecuted = WorkFlowUtil.getMethod(TestWorkFlow.class, "doB");
-         Method otherMethod = WorkFlowUtil.getMethod(TestWorkFlow.class, "doX");
+         Method methodExecuted = WorkflowUtil.getMethod(TestWorkFlow.class, "doB");
+         Method otherMethod = WorkflowUtil.getMethod(TestWorkFlow.class, "doX");
          ctrl.onFail(workflow, methodExecuted, new NullPointerException());
          assertEquals(1, ctrl.retries);
 
@@ -157,10 +157,10 @@ public class WorkFlowControllerTest extends TestWithMemoryDB {
 	@SuppressWarnings("unchecked")
     @Test
 	public void testResetRetryOnDifferentMethod() throws ResourceException {
-		WorkFlowManager workflowManagerMock = Mockito.mock(WorkFlowManager.class);
-		DefaultWorkFlowController ctrl = new DefaultWorkFlowController(workFlowConfig, workflowManagerMock);
+		WorkflowManager workflowManagerMock = Mockito.mock(WorkflowManager.class);
+		DefaultWorkflowController ctrl = new DefaultWorkflowController(workFlowConfig, workflowManagerMock);
 
-		WorkFlow<?> workflow = new WorkFlow<>(UUID.randomUUID(), "key", "no-class", null, (BranchId)null, new Date(), null);
+		Workflow<?> workflow = new Workflow<>(UUID.randomUUID(), "key", "no-class", null, (BranchId)null, new Date(), null);
 		Method methodA = MethodUtils.getAccessibleMethod(this.getClass(), "methodA", new Class[] {});
 		Method methodB = MethodUtils.getAccessibleMethod(this.getClass(), "methodB", new Class[] {});
 				
@@ -178,14 +178,14 @@ public class WorkFlowControllerTest extends TestWithMemoryDB {
 
 	@Test
 	public void controller_onComplete_invoked() throws ResourceException, IOException {
-		WorkFlowController ctrl = Mockito.mock(WorkFlowController.class);
+		WorkflowController ctrl = Mockito.mock(WorkflowController.class);
 
 		TestWorkFlow wf1 = new TestWorkFlow(5, new byte[5]);
 		UserId userId = new UserId("test0");
 		BranchId branchId = new BranchId("3456");
 		Method doX = MethodUtils.getAccessibleMethod(wf1.getClass(), "doX", new Class[] {});
 
-		WorkFlowBuilder<TestWorkFlow> builder = new WorkFlowBuilder<>();
+		WorkflowBuilder<TestWorkFlow> builder = new WorkflowBuilder<>();
 		builder.id(UUID.randomUUID())
 				.workflow(wf1)
 				.externalKey("key")
@@ -199,7 +199,7 @@ public class WorkFlowControllerTest extends TestWithMemoryDB {
 				.controller(ctrl);
 
 //		ServiceFactory.getService(WorkFlowManager.class).start(UUID.randomUUID(), "key", userId, reqDomain, branchId, wf1, subType, doA, startWhen, metadata);
-		WorkFlow<TestWorkFlow> wf = workFlowManager.startImmediate(builder);
+		Workflow<TestWorkFlow> wf = workFlowManager.startImmediate(builder);
 
 		Mockito.verify(ctrl).onStart(wf, doX);
 		Mockito.verify(ctrl).onComplete(wf, doX, null, null);
@@ -207,16 +207,16 @@ public class WorkFlowControllerTest extends TestWithMemoryDB {
 
 	@Test
 	public void controller_onComplete_invoked_with_executedMethod() throws ResourceException, IOException {
-		WorkFlowController ctrl = Mockito.mock(WorkFlowController.class);
+		WorkflowController ctrl = Mockito.mock(WorkflowController.class);
 
 		TestWorkFlow wf1 = new TestWorkFlow(2, new byte[5]);
 		UserId userId = new UserId("test0");
 		BranchId branchId = new BranchId("3456");
-		Method doA = WorkFlowUtil.getMethod(wf1, "doA");
-		Method doB = WorkFlowUtil.getMethod(wf1, "doB");
-		Method doC = WorkFlowUtil.getMethod(wf1, "doC");
+		Method doA = WorkflowUtil.getMethod(wf1, "doA");
+		Method doB = WorkflowUtil.getMethod(wf1, "doB");
+		Method doC = WorkflowUtil.getMethod(wf1, "doC");
 
-		WorkFlowBuilder<TestWorkFlow> builder = new WorkFlowBuilder<>();
+		WorkflowBuilder<TestWorkFlow> builder = new WorkflowBuilder<>();
 		builder.id(UUID.randomUUID())
 				.workflow(wf1)
 				.externalKey("key")
@@ -230,7 +230,7 @@ public class WorkFlowControllerTest extends TestWithMemoryDB {
 				.controller(ctrl);
 
 //		ServiceFactory.getService(WorkFlowManager.class).start(UUID.randomUUID(), "key", userId, reqDomain, branchId, wf1, subType, doA, startWhen, metadata);
-		WorkFlow<TestWorkFlow> wf = workFlowManager.startImmediate(builder);
+		Workflow<TestWorkFlow> wf = workFlowManager.startImmediate(builder);
 
 		Assertions.assertNotNull(wf);
 		Mockito.verify(ctrl, times(1)).onStart(wf, doA);
@@ -243,7 +243,7 @@ public class WorkFlowControllerTest extends TestWithMemoryDB {
 
 	@Test
 	public void controller_onFail_invoked() throws ResourceException, IOException {
-		WorkFlowController ctrl = Mockito.mock(WorkFlowController.class);
+		WorkflowController ctrl = Mockito.mock(WorkflowController.class);
 
 		TestWorkFlow wf1 = new TestWorkFlow(5, new byte[5]);
 		UserId userId = new UserId("test0");
@@ -255,7 +255,7 @@ public class WorkFlowControllerTest extends TestWithMemoryDB {
 		Metadata metadata = null;
 		String reqDomain = null;
 
-		WorkFlowBuilder<TestWorkFlow> builder = new WorkFlowBuilder<>();
+		WorkflowBuilder<TestWorkFlow> builder = new WorkflowBuilder<>();
 		builder.id(UUID.randomUUID())
 				.workflow(wf1)
 				.externalKey("key")
@@ -269,11 +269,11 @@ public class WorkFlowControllerTest extends TestWithMemoryDB {
 				.controller(ctrl);
 
 //		ServiceFactory.getService(WorkFlowManager.class).start(UUID.randomUUID(), "key", userId, reqDomain, branchId, wf1, subType, doA, startWhen, metadata);
-		WorkFlow<TestWorkFlow> wf = workFlowManager.startImmediate(builder);
+		Workflow<TestWorkFlow> wf = workFlowManager.startImmediate(builder);
 
 		Mockito.verify(ctrl).onStart(wf, doExpection);
 
-		ArgumentCaptor<WorkFlow> argumentCaptor1 = ArgumentCaptor.forClass(WorkFlow.class);
+		ArgumentCaptor<Workflow> argumentCaptor1 = ArgumentCaptor.forClass(Workflow.class);
 		ArgumentCaptor<Method> argumentCaptor2 = ArgumentCaptor.forClass(Method.class);
 		ArgumentCaptor<Throwable> argumentCaptor3 = ArgumentCaptor.forClass(Throwable.class);
 		Mockito.verify(ctrl).onFail(argumentCaptor1.capture(), argumentCaptor2.capture(), argumentCaptor3.capture());

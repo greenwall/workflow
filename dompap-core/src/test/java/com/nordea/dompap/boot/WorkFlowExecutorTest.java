@@ -1,8 +1,9 @@
 package com.nordea.dompap.boot;
 
 import com.nordea.dompap.workflow.*;
-import com.nordea.dompap.workflow.boot.ThreadPoolWorkFlowExecutor;
-import com.nordea.dompap.workflow.config.WorkFlowConfig;
+import com.nordea.dompap.workflow.boot.ThreadPoolWorkflowExecutor;
+import com.nordea.dompap.workflow.boot.WorkflowContentInitializer;
+import com.nordea.dompap.workflow.config.WorkflowConfig;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,41 +19,63 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class WorkFlowExecutorTest extends TestWithMemoryDB {
 
     @Autowired
-    WorkFlowManager workFlowManager;
+    WorkflowManager workFlowManager;
 
     @Autowired
-    WorkFlowConfig workFlowConfig;
+    WorkflowConfig workFlowConfig;
 
     @Autowired
-    WorkFlowService workFlowService;
+    WorkflowService workFlowService;
 
     @Test
     public void testStartEngine() throws InterruptedException, ResourceException, IOException {
 
-        workFlowManager.start(new WorkFlowBuilder<>().workflow(new BootTestWorkFlow("0")).methodName("stepA"));
-        workFlowManager.start(new WorkFlowBuilder<>().workflow(new BootTestWorkFlow("1")).methodName("stepA"));
-        workFlowManager.start(new WorkFlowBuilder<>().workflow(new BootTestWorkFlow("2")).methodName("stepA"));
+        workFlowManager.start(new WorkflowBuilder<>().workflow(new BootTestWorkFlow("0")).methodName("stepA"));
+        workFlowManager.start(new WorkflowBuilder<>().workflow(new BootTestWorkFlow("1")).methodName("stepA"));
+        workFlowManager.start(new WorkflowBuilder<>().workflow(new BootTestWorkFlow("2")).methodName("stepA"));
 
-        ThreadPoolWorkFlowExecutor executor = new ThreadPoolWorkFlowExecutor(workFlowManager, workFlowConfig);
+        ThreadPoolWorkflowExecutor executor = new ThreadPoolWorkflowExecutor(workFlowManager, workFlowConfig);
         executor.startWorkFlowEngine();
 
         Thread.sleep(1000*3);
 
-        workFlowManager.start(new WorkFlowBuilder<>().workflow(new BootTestWorkFlow("3")).methodName("stepA"));
-        workFlowManager.start(new WorkFlowBuilder<>().workflow(new BootTestWorkFlow("4")).methodName("stepA"));
-        workFlowManager.start(new WorkFlowBuilder<>().workflow(new BootTestWorkFlow("5")).methodName("stepA"));
-        workFlowManager.start(new WorkFlowBuilder<>().workflow(new BootTestWorkFlow("6")).methodName("stepA"));
-        workFlowManager.start(new WorkFlowBuilder<>().workflow(new BootTestWorkFlow("7")).methodName("stepA"));
+        workFlowManager.start(new WorkflowBuilder<>().workflow(new BootTestWorkFlow("3")).methodName("stepA"));
+        workFlowManager.start(new WorkflowBuilder<>().workflow(new BootTestWorkFlow("4")).methodName("stepA"));
+        workFlowManager.start(new WorkflowBuilder<>().workflow(new BootTestWorkFlow("5")).methodName("stepA"));
+        workFlowManager.start(new WorkflowBuilder<>().workflow(new BootTestWorkFlow("6")).methodName("stepA"));
+        workFlowManager.start(new WorkflowBuilder<>().workflow(new BootTestWorkFlow("7")).methodName("stepA"));
 
         Thread.sleep(1000*3);
 
-        WorkFlowSearch search = new WorkFlowSearch();
-        WorkFlowSearchResult result = workFlowService.searchWorkFlows(search, 0, 10, false);
+        WorkflowSearch search = new WorkflowSearch();
+        WorkflowSearchResult result = workFlowService.searchWorkFlows(search, 0, 10, false);
         assertEquals(8, result.totalWorkflows);
         assertEquals(8, result.workflows.size());
-        for (WorkFlow w: result.workflows) {
+        for (Workflow w: result.workflows) {
             assertEquals("!stepC", w.getMethodName());
         }
 
     }
+
+    @Test
+    public void testStartEngineWithInitializer() throws InterruptedException, ResourceException, IOException {
+
+        workFlowManager.start(new WorkflowBuilder<>().workflow(new BootTestWorkFlow("0")).methodName("stepA1"));
+
+        ThreadPoolWorkflowExecutor executor = new ThreadPoolWorkflowExecutor(workFlowManager, workFlowConfig);
+        executor.addWorkFlowInitializer(BootTestWorkFlow.class.getName(), (WorkflowContentInitializer<BootTestWorkFlow>) content -> content.x = "injected");
+        executor.startWorkFlowEngine();
+
+        Thread.sleep(1000*3);
+
+        WorkflowSearch search = new WorkflowSearch();
+        WorkflowSearchResult result = workFlowService.searchWorkFlows(search, 0, 10, false);
+        assertEquals(1, result.totalWorkflows);
+        assertEquals(1, result.workflows.size());
+        for (Workflow w: result.workflows) {
+            assertEquals("!stepC", w.getMethodName());
+        }
+
+    }
+
 }

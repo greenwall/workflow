@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 public class WorkFlowEventServiceTest extends TestWithMemoryDB {
 
 	@Autowired
-	private WorkFlowEventService service;
+	private WorkflowEventService service;
 
 	@Test
 	public void testFirstEvent() throws ResourceException, InterruptedException {
@@ -28,17 +28,17 @@ public class WorkFlowEventServiceTest extends TestWithMemoryDB {
 		String eventType = "test";
 		String eventName = "please.delete";
 		
-		WorkFlowEvent event1 = service.createEvent(id1, content1, eventType, workflowId, eventName);
+		WorkflowEvent event1 = service.createEvent(id1, content1, eventType, workflowId, eventName);
 		System.out.println(event1.getCreationTime().getTime());
 		
-		WorkFlowEvent firstEvent = service.getFirstEventFor(workflowId);
+		WorkflowEvent firstEvent = service.getFirstEventFor(workflowId);
 		assertEquals(id1, firstEvent.getId());
 
 		Thread.sleep(1);
 
 		UUID id2 = UUID.randomUUID();
 		byte[] content2 = "This is a test event2".getBytes();
-		WorkFlowEvent event2 = service.createEvent(id2, content2, eventType, workflowId, eventName);
+		WorkflowEvent event2 = service.createEvent(id2, content2, eventType, workflowId, eventName);
 		System.out.println(event2.getCreationTime().getTime());
 
 		Thread.sleep(1);
@@ -48,7 +48,7 @@ public class WorkFlowEventServiceTest extends TestWithMemoryDB {
 
 		UUID id3 = UUID.randomUUID();
 		byte[] content3 = "This is a test event3".getBytes();
-		WorkFlowEvent event3 = service.createEvent(id3, content3, eventType, workflowId, eventName);
+		WorkflowEvent event3 = service.createEvent(id3, content3, eventType, workflowId, eventName);
 		System.out.println(event3.getCreationTime().getTime());
 
 		firstEvent = service.getFirstEventFor(workflowId);

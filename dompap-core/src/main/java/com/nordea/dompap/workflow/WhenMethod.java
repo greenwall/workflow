@@ -44,11 +44,11 @@ public class WhenMethod {
     }
 
     public static WhenMethod next(Class<?> workflowClass, String methodName, Date when) {
-        return next(WorkFlowUtil.getMethod(workflowClass, methodName), when);
+        return next(WorkflowUtil.getMethod(workflowClass, methodName), when);
     }
 
     public static WhenMethod next(Class<?> workflowClass, String methodName) {
-        return next(WorkFlowUtil.getMethod(workflowClass, methodName));
+        return next(WorkflowUtil.getMethod(workflowClass, methodName));
     }
 
     public WhenMethod when(DateTime executionTime) {

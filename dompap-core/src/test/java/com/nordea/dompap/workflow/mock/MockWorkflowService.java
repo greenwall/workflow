@@ -1,7 +1,7 @@
 package com.nordea.dompap.workflow.mock;
 
 import com.nordea.dompap.workflow.*;
-import com.nordea.dompap.workflow.content.WorkFlowContentSerializer;
+import com.nordea.dompap.workflow.content.WorkflowContentSerializer;
 import com.nordea.next.dompap.domain.BranchId;
 import com.nordea.next.dompap.domain.UserId;
 import org.joda.time.Interval;
@@ -14,97 +14,97 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-public class MockWorkflowService implements WorkFlowService {
+public class MockWorkflowService implements WorkflowService {
 
     @Override
-    public <T> WorkFlow<T> getWorkFlow(UUID uuid, Class<T> interfaceClass) throws ResourceException {
+    public <T> Workflow<T> getWorkFlow(UUID uuid, Class<T> interfaceClass) throws ResourceException {
         // TODO Auto-generated method stub
         return null;
     }
 
     @SuppressWarnings("unchecked")
 	@Override
-    public WorkFlow<?> getWorkFlow(UUID uuid) throws ResourceException {
+    public Workflow<?> getWorkFlow(UUID uuid) throws ResourceException {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public <T> WorkFlow<T> findWorkFlowByExternalKey(String externalKey) throws ResourceException {
+    public <T> Workflow<T> findWorkFlowByExternalKey(String externalKey) throws ResourceException {
         return null;
     }
 
     @Override
-    public <T> T loadWorkFlowContent(WorkFlow<T> workflow)
+    public <T> T loadWorkFlowContent(Workflow<T> workflow)
             throws ResourceException, ClassNotFoundException, IOException {
         return workflow.getContent();
     }
 
     @Override
-    public <T> WorkFlowController loadWorkFlowController(WorkFlow<T> workflow) throws ResourceException, ClassNotFoundException, IOException {
+    public <T> WorkflowController loadWorkFlowController(Workflow<T> workflow) throws ResourceException, ClassNotFoundException, IOException {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public <T> void saveWorkFlowController(WorkFlow<T> workflow, WorkFlowController controller) throws ResourceException {
+    public <T> void saveWorkFlowController(Workflow<T> workflow, WorkflowController controller) throws ResourceException {
         // TODO Auto-generated method stub
 
     }
 
     @Override
-    public <T> WorkFlow<T> insertWorkFlow(UUID id, String externalKey, UserId userId, String requestDomain, BranchId branchId,
-                                          T workflowInstance, Method method, Date startWhen, Metadata metadata, WorkFlowController controller)
+    public <T> Workflow<T> insertWorkFlow(UUID id, String externalKey, UserId userId, String requestDomain, BranchId branchId,
+                                          T workflowInstance, Method method, Date startWhen, Metadata metadata, WorkflowController controller)
             throws ResourceException, IOException {
         // TODO Auto-generated method stub
         return null;
     }
 
 	@Override
-	public <T> WorkFlow<T> insertWorkFlow(UUID id, String externalKey, UserId userId, String requestDomain, BranchId branchId,
-                                          String workflowClassName, String subType, WorkFlowContentSerializer contentSerializer, T workflowInstance,
-                                          String methodName, Date startWhen, Metadata metadata, WorkFlowController controller)
+	public <T> Workflow<T> insertWorkFlow(UUID id, String externalKey, UserId userId, String requestDomain, BranchId branchId,
+                                          String workflowClassName, String subType, WorkflowContentSerializer contentSerializer, T workflowInstance,
+                                          String methodName, Date startWhen, Metadata metadata, WorkflowController controller)
 			throws ResourceException, IOException {
 		// TODO Auto-generated method stub
 		return null;
 	}
     
 	@Override
-	public <T> WorkFlow<T> insertWorkFlow(UUID id, String externalKey, UserId userId, String requestDomain, BranchId branchId,
-			String workflowClassName, WorkFlowContentSerializer contentSerializer, T workflowInstance, String methodName, Date startWhen, Metadata metadata,
-			WorkFlowController controller) throws ResourceException, IOException {
+	public <T> Workflow<T> insertWorkFlow(UUID id, String externalKey, UserId userId, String requestDomain, BranchId branchId,
+                                          String workflowClassName, WorkflowContentSerializer contentSerializer, T workflowInstance, String methodName, Date startWhen, Metadata metadata,
+                                          WorkflowController controller) throws ResourceException, IOException {
 		// TODO Auto-generated method stub
 		return null;
 	}    
         
     @Override
-    public <T> void saveWorkFlowContent(WorkFlow<T> workflow) throws ResourceException {
+    public <T> void saveWorkFlowContent(Workflow<T> workflow) throws ResourceException {
         // TODO Auto-generated method stub
 
     }
 
     @Override
-    public <T> Metadata loadWorkFlowMetadata(WorkFlow<T> workflow) throws ResourceException {
+    public <T> Metadata loadWorkFlowMetadata(Workflow<T> workflow) throws ResourceException {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public <T> void saveWorkFlowMetadata(WorkFlow<T> workflow, Metadata metadata) throws ResourceException {
+    public <T> void saveWorkFlowMetadata(Workflow<T> workflow, Metadata metadata) throws ResourceException {
         // TODO Auto-generated method stub
 
     }
 
     @Override
-    public <T> void updateWorkFlow(WorkFlow<T> workflow, String methodName, Date startWhen, Date methodStarted,
-            Date methodEnded, Throwable methodException, Metadata metadata) throws ResourceException {
+    public <T> void updateWorkFlow(Workflow<T> workflow, String methodName, Date startWhen, Date methodStarted,
+                                   Date methodEnded, Throwable methodException, Metadata metadata) throws ResourceException {
         // TODO Auto-generated method stub
 
     }
 
     @Override
-    public <T> void updateWorkFlow(WorkFlow<T> workflow, Method method, Date startWhen, Date methodStarted,
-            Date methodEnded, Throwable methodException, Metadata metadata) throws ResourceException {
+    public <T> void updateWorkFlow(Workflow<T> workflow, Method method, Date startWhen, Date methodStarted,
+                                   Date methodEnded, Throwable methodException, Metadata metadata) throws ResourceException {
 //        ServiceFactory.getService(WorkFlowService.class).updateWorkFlow(workflow, step, null, startTime, null, null, null);
     		workflow.setMethodName(method.getName());
     		workflow.setMethodStarted(methodStarted);
@@ -112,32 +112,32 @@ public class MockWorkflowService implements WorkFlowService {
     }
 
     @Override
-    public <T> WorkFlow<T> pickReadyWorkFlow(String workflowClassName, String subType) throws ResourceException {
+    public <T> Workflow<T> pickReadyWorkFlow(String workflowClassName, String subType) throws ResourceException {
         return null;
     }
 
     @Override
-    public <T> List<WorkFlow<T>> pickReadyWorkFlows(String workflowClassName, String subType, int maxCount) throws ResourceException {
+    public <T> List<Workflow<T>> pickReadyWorkFlows(String workflowClassName, String subType, int maxCount) throws ResourceException {
     	return Collections.emptyList();
     }
 
     @SuppressWarnings("rawtypes")
 	@Override
-    public List<WorkFlow> getWorkFlows(UserId userId, BranchId branchId, Interval creationTime, Integer startRow,
-            Integer maxRows) throws ResourceException {
+    public List<Workflow> getWorkFlows(UserId userId, BranchId branchId, Interval creationTime, Integer startRow,
+                                       Integer maxRows) throws ResourceException {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public WorkFlowSearchResult searchWorkFlows(WorkFlowSearch search, Integer startRow, Integer maxRows)
+    public WorkflowSearchResult searchWorkFlows(WorkflowSearch search, Integer startRow, Integer maxRows)
             throws ResourceException {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public WorkFlowSearchResult searchWorkFlowsAggregated(WorkFlowSearch search, Integer startRow, Integer maxRows, Integer totalRows)
+    public WorkflowSearchResult searchWorkFlowsAggregated(WorkflowSearch search, Integer startRow, Integer maxRows, Integer totalRows)
             throws ResourceException {
         // TODO Auto-generated method stub
         return null;
@@ -150,105 +150,105 @@ public class MockWorkflowService implements WorkFlowService {
     }
 
     @Override
-    public <T> List<WorkFlowStepResult> getWorkFlowHistory(WorkFlow<T> workflow) throws ResourceException {
+    public <T> List<WorkflowStepResult> getWorkFlowHistory(Workflow<T> workflow) throws ResourceException {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public List<WorkFlowMethodCount> getWorkflowStatus(int[] periodsInMinutes) throws ResourceException {
+    public List<WorkflowMethodCount> getWorkflowStatus(int[] periodsInMinutes) throws ResourceException {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public List<WorkFlowMethodCount> getWorkflowStatus(int[] periods, String workflowClass) throws ResourceException {
+    public List<WorkflowMethodCount> getWorkflowStatus(int[] periods, String workflowClass) throws ResourceException {
         // TODO Auto-generated method stub
         return null;
     }
 
 	@Override
-	public List<WorkFlowMethodCount> getWorkflowStatus(WorkFlowStatusQuery query) throws ResourceException {
+	public List<WorkflowMethodCount> getWorkflowStatus(WorkflowStatusQuery query) throws ResourceException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
     @Override
-    public <T> void archiveWorkFlow(WorkFlow<T> workflow) throws ResourceException {
+    public <T> void archiveWorkFlow(Workflow<T> workflow) throws ResourceException {
         // TODO Auto-generated method stub
 
     }
 
 	@Override
-	public int updateWorkFlowLabel(WorkFlowSearch search, WorkFlowLabel label) throws ResourceException {
+	public int updateWorkFlowLabel(WorkflowSearch search, WorkflowLabel label) throws ResourceException {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
-	public <T> T loadWorkFlowContent(WorkFlow<T> workflow, WorkFlowContentSerializer contentSerializer)
+	public <T> T loadWorkFlowContent(Workflow<T> workflow, WorkflowContentSerializer contentSerializer)
 			throws ResourceException, ClassNotFoundException, IOException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public <T> void saveWorkFlowContent(WorkFlow<T> workflow, WorkFlowContentSerializer contentSerializer)
+	public <T> void saveWorkFlowContent(Workflow<T> workflow, WorkflowContentSerializer contentSerializer)
 			throws ResourceException {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public <T> void queueEvent(WorkFlow<T> workflow, UUID eventId) throws ResourceException {
+	public <T> void queueEvent(Workflow<T> workflow, UUID eventId) throws ResourceException {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public <T> void updateWorkFlow(WorkFlow<T> workflow, String methodName, Date startWhen, Date methodStarted,
-			Date methodEnded, Throwable methodException, Metadata metadata, boolean processEvents)
+	public <T> void updateWorkFlow(Workflow<T> workflow, String methodName, Date startWhen, Date methodStarted,
+                                   Date methodEnded, Throwable methodException, Metadata metadata, boolean processEvents)
 			throws ResourceException {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public <T> void updateWorkFlow(WorkFlow<T> workflow, Method method, Date startWhen, Date methodStarted,
-			Date methodEnded, Throwable methodException, Metadata metadata, boolean processEvents)
+	public <T> void updateWorkFlow(Workflow<T> workflow, Method method, Date startWhen, Date methodStarted,
+                                   Date methodEnded, Throwable methodException, Metadata metadata, boolean processEvents)
 			throws ResourceException {
 		// TODO Auto-generated method stub
 		
 	}
 
     @Override
-    public <T> void stepExecutionCompleted(WorkFlow<T> workflow, Method method, Date startWhen, Date methodStarted, Date methodEnded, Throwable methodException, Metadata metadata, boolean processEvents) throws ResourceException {
+    public <T> void stepExecutionCompleted(Workflow<T> workflow, Method method, Date startWhen, Date methodStarted, Date methodEnded, Throwable methodException, Metadata metadata, boolean processEvents) throws ResourceException {
         // Ignore
     }
 
     @Override
-	public <T> WorkFlow<T> insertWorkFlow(UUID id, String externalKey, UserId userId, String requestDomain, BranchId branchId,
-			T workflowInstance, String subType, Method method, Date startWhen, Metadata metadata,
-			WorkFlowController controller) throws ResourceException, IOException {
+	public <T> Workflow<T> insertWorkFlow(UUID id, String externalKey, UserId userId, String requestDomain, BranchId branchId,
+                                          T workflowInstance, String subType, Method method, Date startWhen, Metadata metadata,
+                                          WorkflowController controller) throws ResourceException, IOException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public <T> WorkFlow<T> insertWorkFlow(WorkFlowBuilder<T> workflowBuilder) throws ResourceException, IOException {
+	public <T> Workflow<T> insertWorkFlow(WorkflowBuilder<T> workflowBuilder) throws ResourceException, IOException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
     @Override
-    public WorkFlowSearchResult searchWorkFlows(WorkFlowSearch search, Integer startRow, Integer maxRows,
-            boolean supportBackwardCompatibility) throws ResourceException {
+    public WorkflowSearchResult searchWorkFlows(WorkflowSearch search, Integer startRow, Integer maxRows,
+                                                boolean supportBackwardCompatibility) throws ResourceException {
         // TODO Auto-generated method stub
         return null;
     }
 
 	@Override
-	public int resumeWorkFlows(WorkFlowSearch search, List<String> workFlowIdList, String methodName)
+	public int resumeWorkFlows(WorkflowSearch search, List<String> workFlowIdList, String methodName)
 			throws ResourceException {
 		// TODO Auto-generated method stub
 		return 0;

@@ -27,10 +27,10 @@ public class WorkFlowServiceMetadataTest extends TestWithMemoryDB {
 	private long saveWorkFlowMetadataTimer;
 
 	@Autowired
-	WorkFlowService workFlowService;
+    WorkflowService workFlowService;
 
 	@Autowired
-	WorkFlowManager workFlowManager;
+    WorkflowManager workFlowManager;
 
 	@Autowired
 	MetadataService metadataService;
@@ -71,7 +71,7 @@ public class WorkFlowServiceMetadataTest extends TestWithMemoryDB {
 
 		
 		long start = System.currentTimeMillis();
-		WorkFlow<?> wf = workFlowManager.getWorkFlowOnly(id);
+		Workflow<?> wf = workFlowManager.getWorkFlowOnly(id);
 		getWorkflowOnlyTimer  += System.currentTimeMillis()-start; 
 		
 		start = System.currentTimeMillis();

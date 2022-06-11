@@ -2,7 +2,7 @@ package com.nordea.dompap.workflow;
 
 import com.nordea.dompap.config.WorkFlowConfigSpring;
 import com.nordea.dompap.workflow.util.WorkflowProcessingStatus;
-import com.nordea.dompap.workflow.config.WorkFlowConfig;
+import com.nordea.dompap.workflow.config.WorkflowConfig;
 import com.nordea.dompap.workflow.mock.MockWorkflowService;
 import com.nordea.next.dompap.domain.BranchId;
 import com.nordea.next.dompap.domain.UserId;
@@ -30,16 +30,16 @@ public class WorkFlowManagerTest extends TestWithMemoryDB {
 	BranchId branchId = new BranchId("0000");
 
 	@Autowired
-	WorkFlowManager workFlowManager;
+	WorkflowManager workFlowManager;
 
 	@Test
 	public void testStartImmediateFlowWithExceptionInA() throws ResourceException, IOException {
 		byte[] blob = new byte[100];
 		
 		TestWorkFlow workflow = new TestWorkFlow(0, blob);
-		Method method = WorkFlowUtil.getMethod(workflow, "doA");
+		Method method = WorkflowUtil.getMethod(workflow, "doA");
 	
-		WorkFlow<TestWorkFlow> task = workFlowManager.startImmediate(null, null, userId, "requestDomain", branchId, workflow, method);
+		Workflow<TestWorkFlow> task = workFlowManager.startImmediate(null, null, userId, "requestDomain", branchId, workflow, method);
 		
 		assertEquals("java.lang.NullPointerException", task.getExceptionName());
 	}
@@ -55,7 +55,7 @@ public class WorkFlowManagerTest extends TestWithMemoryDB {
 			TestWorkFlow workflow = new TestWorkFlow(n, blob);
 			Method method = TestWorkFlow.doA;
 		
-			WorkFlow<TestWorkFlow> task = workFlowManager.startImmediate(null, null, userId, "requestDomain", branchId, workflow, method);
+			Workflow<TestWorkFlow> task = workFlowManager.startImmediate(null, null, userId, "requestDomain", branchId, workflow, method);
 		}		
 	}
 
@@ -63,7 +63,7 @@ public class WorkFlowManagerTest extends TestWithMemoryDB {
 	public void testCreateFlow() throws ResourceException, IOException {
 		String workflow = "something";
 
-		WorkFlow<String> task = workFlowManager.create(UUID.randomUUID(), null, userId,
+		Workflow<String> task = workFlowManager.create(UUID.randomUUID(), null, userId,
 				"requestDomain", branchId, workflow.getClass().getName(), null, workflow, "start", null, null);
 
 	}
@@ -79,7 +79,7 @@ public class WorkFlowManagerTest extends TestWithMemoryDB {
 			TestWorkFlow workflow = new TestWorkFlow(n, blob);
 			Method method = TestWorkFlow.doA;
 		
-			WorkFlow<TestWorkFlow> task = workFlowManager.start(null, null, userId, "requestDomain", branchId, workflow, null, method, null, null);
+			Workflow<TestWorkFlow> task = workFlowManager.start(null, null, userId, "requestDomain", branchId, workflow, null, method, null, null);
 		}		
 	}
 
@@ -95,14 +95,14 @@ public class WorkFlowManagerTest extends TestWithMemoryDB {
 		
 		UUID id = UUID.randomUUID();
 				
-		WorkFlow<TestWorkFlow> task = workFlowManager.start(id, null, userId, "requestDomain", branchId, workflow, null, method, null, null);
+		Workflow<TestWorkFlow> task = workFlowManager.start(id, null, userId, "requestDomain", branchId, workflow, null, method, null, null);
 		
 		assertEquals(id, task.getId());
 		
 		String externalKey = "my-key-"+UUID.randomUUID();
 		workFlowManager.updateExternalKey(task.getId(), externalKey);
 		
-		WorkFlow task2 = workFlowManager.getWorkFlow(task.getId());
+		Workflow task2 = workFlowManager.getWorkFlow(task.getId());
 		
 		assertEquals(externalKey, task2.externalKey);
 	}
@@ -119,7 +119,7 @@ public class WorkFlowManagerTest extends TestWithMemoryDB {
 		
 		UUID id = UUID.randomUUID();
 				
-		WorkFlow<TestWorkFlow> task = workFlowManager.start(id, null, userId, "requestDomain", branchId, workflow, null, method, null, null);
+		Workflow<TestWorkFlow> task = workFlowManager.start(id, null, userId, "requestDomain", branchId, workflow, null, method, null, null);
 		
 		assertEquals(id, task.getId());
 	}
@@ -139,11 +139,11 @@ public class WorkFlowManagerTest extends TestWithMemoryDB {
 		Method doA = TestWorkFlow.doA;
 		
 		String reqDomain = null;
-		WorkFlow<TestWorkFlow> task1 = workFlowManager.start(null, null, userId, reqDomain, branchId, wf1, null, doA, null, null);
-		WorkFlow<TestWorkFlow> task2 = workFlowManager.start(null, null, userId, reqDomain, branchId, wf2, null, doA, null, null);
-		WorkFlow<TestWorkFlow> task3 = workFlowManager.start(null, null, userId, reqDomain, branchId, wf3, null, doA, null, null);
-		WorkFlow<TestWorkFlow> task4 = workFlowManager.start(null, null, userId, reqDomain, branchId, wf4, null, doA, null, null);
-		WorkFlow<TestWorkFlow> task5 = workFlowManager.start(null, null, userId, reqDomain, branchId, wf5, null, doA, null, null);
+		Workflow<TestWorkFlow> task1 = workFlowManager.start(null, null, userId, reqDomain, branchId, wf1, null, doA, null, null);
+		Workflow<TestWorkFlow> task2 = workFlowManager.start(null, null, userId, reqDomain, branchId, wf2, null, doA, null, null);
+		Workflow<TestWorkFlow> task3 = workFlowManager.start(null, null, userId, reqDomain, branchId, wf3, null, doA, null, null);
+		Workflow<TestWorkFlow> task4 = workFlowManager.start(null, null, userId, reqDomain, branchId, wf4, null, doA, null, null);
+		Workflow<TestWorkFlow> task5 = workFlowManager.start(null, null, userId, reqDomain, branchId, wf5, null, doA, null, null);
 	}
 
 	@Test
@@ -156,14 +156,14 @@ public class WorkFlowManagerTest extends TestWithMemoryDB {
 
 		Method doException = TestWorkFlow.doException;
 		
-		WorkFlow<TestWorkFlow> task1 = workFlowManager.start(null, null, userId, "requestDomain", branchId, wf1, null, doException, null, null);
+		Workflow<TestWorkFlow> task1 = workFlowManager.start(null, null, userId, "requestDomain", branchId, wf1, null, doException, null, null);
 	}
 
 	//@Test
 	public void testPickAndExecuteAll() throws ResourceException {
 		WorkflowProcessingStatus ps;
 		do {
-			ps = workFlowManager.pickAndExecute(TestWorkFlow.class.getName(), null);
+			ps = workFlowManager.pickAndExecute(TestWorkFlow.class.getName(), null, null);
 		} while (ps!=WorkflowProcessingStatus.idle);
 	}
 
@@ -171,29 +171,29 @@ public class WorkFlowManagerTest extends TestWithMemoryDB {
 	@Test
 	public void testPickAndExecuteFirst() throws ResourceException {
         WorkflowProcessingStatus ps;
-		ps = workFlowManager.pickAndExecute("com.nordea.documentbox.workflow.fi.DocumentProcessFI", null);
+		ps = workFlowManager.pickAndExecute("com.nordea.documentbox.workflow.fi.DocumentProcessFI", null, null);
 	}
 	
 	@Test 
 	public void testMethodLookup() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		TestWorkFlow content = new TestWorkFlow(5, "test".getBytes());
-		Method doA = WorkFlowUtil.getMethod(TestWorkFlow.class, "doA");
+		Method doA = WorkflowUtil.getMethod(TestWorkFlow.class, "doA");
 		assertEquals("doA", doA.getName());
 
-		Method doA2 = WorkFlowUtil.getMethod(content, "doA");
+		Method doA2 = WorkflowUtil.getMethod(content, "doA");
 		assertEquals("doA", doA2.getName());
 		assertEquals(doA, doA2);
 		
-		Method doB = WorkFlowUtil.getMethod(TestWorkFlow.class, "doB");
+		Method doB = WorkflowUtil.getMethod(TestWorkFlow.class, "doB");
 		assertEquals("doB", doB.getName());
 				
-		WorkFlow<?> wf = new WorkFlow<>();
+		Workflow<?> wf = new Workflow<>();
 
 //    	assertEquals(new Class[] {WorkFlow.class}, doA.getParameterTypes());
-		assertEquals(WorkFlow.class, doA.getParameterTypes()[0]);
+		assertEquals(Workflow.class, doA.getParameterTypes()[0]);
     	doA.invoke(content, wf);
     	
-    	if (Arrays.equals(doA.getParameterTypes(), new Class[] {WorkFlow.class})) {
+    	if (Arrays.equals(doA.getParameterTypes(), new Class[] {Workflow.class})) {
     		                		
     	} else {
     		fail("doA has one formal parameter of type WorkFlow.class");
@@ -203,8 +203,8 @@ public class WorkFlowManagerTest extends TestWithMemoryDB {
 	
 	@Test
 	public void testExecute() throws ResourceException {
-		WorkFlowService workFlowService = new MockWorkflowService();
-		WorkFlowConfig config = new WorkFlowConfigSpring();
+		WorkflowService workFlowService = new MockWorkflowService();
+		WorkflowConfig config = new WorkFlowConfigSpring();
 		//WorkFlowContext context = new WorkFlowContext();
 		//context.setWorkFlowService(workFlowService);
 
@@ -215,12 +215,12 @@ public class WorkFlowManagerTest extends TestWithMemoryDB {
 		String subType = null;
 		Date creationTime = new Date();
 		Date lastUpdateTime = new Date();
-		WorkFlow<TestWorkFlow> wf = new WorkFlow<>(id, externalKey, content.getClass().getName(), subType, userId, branchId, creationTime, lastUpdateTime);
+		Workflow<TestWorkFlow> wf = new Workflow<>(id, externalKey, content.getClass().getName(), subType, userId, branchId, creationTime, lastUpdateTime);
 		wf.setContent(content);
 		Method doA = TestWorkFlow.doA;
 
-		WorkFlowManagerImpl workFlowManager = new WorkFlowManagerImpl(config, workFlowService);
-		WorkFlowController controller = new DefaultWorkFlowController(config, workFlowManager);
+		WorkflowManagerImpl workFlowManager = new WorkflowManagerImpl(config, workFlowService);
+		WorkflowController controller = new DefaultWorkflowController(config, workFlowManager);
 //		wf.setMethodStarted(new Date());
 		wf.setMethodName(doA.getName());
 

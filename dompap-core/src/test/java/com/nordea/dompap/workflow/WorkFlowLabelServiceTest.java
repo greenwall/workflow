@@ -3,7 +3,6 @@ package com.nordea.dompap.workflow;
 import com.nordea.next.dompap.domain.UserId;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
@@ -22,9 +21,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class WorkFlowLabelServiceTest extends TestWithMemoryDB {
 
 	@Autowired
-	WorkFlowLabelService workFlowLabelService;
+	WorkflowLabelService workFlowLabelService;
 	@Autowired
-	WorkFlowService workFlowService;
+	WorkflowService workFlowService;
 
 	@Test
 	public void testCreateDelete() throws ResourceException {
@@ -34,11 +33,11 @@ public class WorkFlowLabelServiceTest extends TestWithMemoryDB {
 		int ignoreWorkflows = 0;
 		String description = "This is a test";
 
-		List<WorkFlowLabel> result;
+		List<WorkflowLabel> result;
 		result = workFlowLabelService.searchLabels(createdBy, null, null, name);
 		assertEquals(0, result.size());
 		
-		WorkFlowLabel label = workFlowLabelService.create(createdBy, expireTime, name, ignoreWorkflows, description);
+		WorkflowLabel label = workFlowLabelService.create(createdBy, expireTime, name, ignoreWorkflows, description);
 
 		result = workFlowLabelService.searchLabels(createdBy, null, null, name);
 		assertEquals(1, result.size());
@@ -60,43 +59,43 @@ public class WorkFlowLabelServiceTest extends TestWithMemoryDB {
 
 		// Search for existing label and remove if found
 		{
-			List<WorkFlowLabel> labels = workFlowLabelService.searchLabels(null, null,  null, name);
+			List<WorkflowLabel> labels = workFlowLabelService.searchLabels(null, null,  null, name);
 			if (labels.size()==1) {
 				workFlowLabelService.deleteLabel(labels.get(0));
 			}
 		}
 		
 		// Create label
-		WorkFlowLabel label = workFlowLabelService.create(createdBy, expireTime, name, ignoreWorkflows, description);
+		WorkflowLabel label = workFlowLabelService.create(createdBy, expireTime, name, ignoreWorkflows, description);
 
 		// Assert label is not added to any workflows.
 		{
-			WorkFlowSearch searchWithLabel = new WorkFlowSearch();
+			WorkflowSearch searchWithLabel = new WorkflowSearch();
 			searchWithLabel.setLabelId(label.getId().toString());
-			WorkFlowSearchResult resultWithLabel = workFlowService.searchWorkFlows(searchWithLabel, 0, 10, false);
+			WorkflowSearchResult resultWithLabel = workFlowService.searchWorkFlows(searchWithLabel, 0, 10, false);
 			assertEquals(0, resultWithLabel.totalWorkflows);
 		}
 
-		WorkFlowBuilder<String> builder = new WorkFlowBuilder<>();
+		WorkflowBuilder<String> builder = new WorkflowBuilder<>();
 		builder.workflow("test").methodName("no");
 		for (int n=0; n<10; n++) {
 			workFlowService.insertWorkFlow(builder);
 		}
 
 		// Fetch 10 workflows
-		WorkFlowSearch search = new WorkFlowSearch();
-		WorkFlowSearchResult result = workFlowService.searchWorkFlows(search, 0, 10, false);
+		WorkflowSearch search = new WorkflowSearch();
+		WorkflowSearchResult result = workFlowService.searchWorkFlows(search, 0, 10, false);
 		assertTrue(result.totalWorkflows>=10);
 		
 		// Add label to 10 workflows
-		List<UUID> workflowIds = result.workflows.stream().map(WorkFlow::getId).collect(Collectors.toList());
+		List<UUID> workflowIds = result.workflows.stream().map(Workflow::getId).collect(Collectors.toList());
 		workFlowLabelService.addLabelToWorkFlows(label, workflowIds);
 		
 		// Assert label is added to 10 workflows.
 		{
-			WorkFlowSearch searchWithLabel = new WorkFlowSearch();
+			WorkflowSearch searchWithLabel = new WorkflowSearch();
 			searchWithLabel.setLabelId(label.getId().toString());
-			WorkFlowSearchResult resultWithLabel = workFlowService.searchWorkFlows(searchWithLabel, 0, 10, false);
+			WorkflowSearchResult resultWithLabel = workFlowService.searchWorkFlows(searchWithLabel, 0, 10, false);
 			assertEquals(10, resultWithLabel.totalWorkflows);
 		}		
 		
@@ -106,9 +105,9 @@ public class WorkFlowLabelServiceTest extends TestWithMemoryDB {
 			
 			workFlowLabelService.deleteLabel(label);
 
-			WorkFlowSearch searchWithLabel = new WorkFlowSearch();
+			WorkflowSearch searchWithLabel = new WorkflowSearch();
 			searchWithLabel.setLabelId(labelId.toString());
-			WorkFlowSearchResult resultWithLabel = workFlowService.searchWorkFlows(searchWithLabel, 0, 10, false);
+			WorkflowSearchResult resultWithLabel = workFlowService.searchWorkFlows(searchWithLabel, 0, 10, false);
 			assertEquals(0, resultWithLabel.totalWorkflows);
 		}
 	

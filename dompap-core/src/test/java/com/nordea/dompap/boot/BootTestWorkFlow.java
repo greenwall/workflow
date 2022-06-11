@@ -1,22 +1,18 @@
 package com.nordea.dompap.boot;
 
 import com.nordea.dompap.workflow.FinalState;
-import com.nordea.dompap.workflow.WorkFlow;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.Serializable;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
-import static com.nordea.dompap.workflow.WorkFlowUtil.getMethod;
+import static com.nordea.dompap.workflow.WorkflowUtil.getMethod;
 
 @Slf4j
 public class BootTestWorkFlow implements Serializable {
 
 	String s;
+	transient String x;
 
 	public BootTestWorkFlow(String s) {
 		this.s = s;
@@ -46,6 +42,16 @@ public class BootTestWorkFlow implements Serializable {
 	public Method stepC() {
 		log.info("doing doC");
 		return null;
+	}
+
+	public static Method stepA1 = method("stepA1");
+	public Method stepA1() {
+		log.info("doing stepA1");
+		if ("injected".equals(x)) {
+			return stepC;
+		} else {
+			return null;
+		}
 	}
 
 }

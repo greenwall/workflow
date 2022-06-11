@@ -22,21 +22,21 @@ import static org.junit.jupiter.api.Assertions.*;
 public class WorkFlowServiceSearchTest extends TestWithMemoryDB {
 
 	@Autowired
-	WorkFlowService workFlowService;
+	WorkflowService workFlowService;
 	@Autowired
-	WorkFlowManager workFlowManager;
+	WorkflowManager workFlowManager;
 	@Autowired
-	WorkFlowStatusService workFlowStatusService;
+	WorkflowStatusService workFlowStatusService;
 	@Autowired
 	MetadataService metadataService;
 
 	@Test
 	public void testStatus() throws ResourceException {
-		WorkFlowStatusQuery query = new WorkFlowStatusQuery();
+		WorkflowStatusQuery query = new WorkflowStatusQuery();
 		query.setPeriods(new int[] {1440, 2880, 14400});
 		query.setIncludeRecentMinutes(1440);
 		query.setIncludeLastDays(10);
-		List<WorkFlowMethodCount> lines = workFlowStatusService.getWorkflowStatus(query);
+		List<WorkflowMethodCount> lines = workFlowStatusService.getWorkflowStatus(query);
 	}
 
 	@Test
@@ -49,9 +49,9 @@ public class WorkFlowServiceSearchTest extends TestWithMemoryDB {
 
 		byte[] blob = new byte[0];
 		
-		Method doA = WorkFlowUtil.getMethod(TestWorkFlow.class, "doA");
-		Method doB = WorkFlowUtil.getMethod(TestWorkFlow.class, "doB");
-		Method doC = WorkFlowUtil.getMethod(TestWorkFlow.class, "doC");
+		Method doA = WorkflowUtil.getMethod(TestWorkFlow.class, "doA");
+		Method doB = WorkflowUtil.getMethod(TestWorkFlow.class, "doB");
+		Method doC = WorkflowUtil.getMethod(TestWorkFlow.class, "doC");
 
 		long timestamp = System.currentTimeMillis();
 		TestWorkFlow wf1 = new TestWorkFlow(5, blob);
@@ -64,48 +64,48 @@ public class WorkFlowServiceSearchTest extends TestWithMemoryDB {
 		TestWorkFlow wf3 = new TestWorkFlow(8, blob);
 		Metadata meta3 = createMetadata("A3"+timestamp, "B3"+timestamp, "C3"+timestamp, "D3"+timestamp);
 
-		WorkFlowSearch search = new WorkFlowSearch();
+		WorkflowSearch search = new WorkflowSearch();
 		search.setBranchId(branchId);
 		search.setMethod("doB");
-		WorkFlowSearchResult before = workFlowService.searchWorkFlows(search, 0, 10);
+		WorkflowSearchResult before = workFlowService.searchWorkFlows(search, 0, 10);
 
-		WorkFlow<?> w1 = workFlowService.insertWorkFlow(null, null, userId, "requestDomain", branchId, wf1, doA, null, meta1, null);
-		WorkFlow<?> w2 = workFlowService.insertWorkFlow(null, null, userId, "requestDomain", branchId, wf2, doB, null, meta2, null);
-		WorkFlow<?> w3 = workFlowService.insertWorkFlow(null, null, userId, "requestDomain", branchId, wf3, doC, null, meta3, null);
+		Workflow<?> w1 = workFlowService.insertWorkFlow(null, null, userId, "requestDomain", branchId, wf1, doA, null, meta1, null);
+		Workflow<?> w2 = workFlowService.insertWorkFlow(null, null, userId, "requestDomain", branchId, wf2, doB, null, meta2, null);
+		Workflow<?> w3 = workFlowService.insertWorkFlow(null, null, userId, "requestDomain", branchId, wf3, doC, null, meta3, null);
 
-		WorkFlowSearch all = new WorkFlowSearch();
+		WorkflowSearch all = new WorkflowSearch();
 		all.setBranchId(branchId);
-		WorkFlowSearchResult total = workFlowService.searchWorkFlows(all, 0, 10);
+		WorkflowSearchResult total = workFlowService.searchWorkFlows(all, 0, 10);
 		System.out.println("Total workflows="+total.totalWorkflows);
 		
 		{
-			WorkFlowSearchResult after = workFlowService.searchWorkFlows(search, 0, 10);
+			WorkflowSearchResult after = workFlowService.searchWorkFlows(search, 0, 10);
 			assertEquals(1, after.totalWorkflows - before.totalWorkflows);
 			assertEquals(w2.getId(), after.workflows.get(0).getId());
 		}
 
 		{
-			search = new WorkFlowSearch();
+			search = new WorkflowSearch();
 			search.setBranchId(branchId);			
 			search.setWorkFlowClass(TestWorkFlow.class);
-			WorkFlowSearchResult result = workFlowService.searchWorkFlows(search, 0, 10);
+			WorkflowSearchResult result = workFlowService.searchWorkFlows(search, 0, 10);
 			assertEquals(3, result.totalWorkflows);
 			assertTrue(result.workflows.stream().anyMatch(w->w.getId().equals(w3.getId())));
 		}
 
 		{
-			search = new WorkFlowSearch();
+			search = new WorkflowSearch();
 			search.setBranchId(branchId);
 			search.putMetadataProperty("propB", "B1%");
-			WorkFlowSearchResult result = workFlowService.searchWorkFlows(search, 0, 10);
+			WorkflowSearchResult result = workFlowService.searchWorkFlows(search, 0, 10);
 			assertEquals(w1.getId(), result.workflows.get(0).getId());
 		}
 
 		{
-			search = new WorkFlowSearch();
+			search = new WorkflowSearch();
 			search.setBranchId(branchId);
 			search.putMetadataProperty("propB", "B3"+timestamp);
-			WorkFlowSearchResult result = workFlowService.searchWorkFlows(search, 0, 10);
+			WorkflowSearchResult result = workFlowService.searchWorkFlows(search, 0, 10);
 			assertEquals(w3.getId(), result.workflows.get(0).getId());
 		}
 		
@@ -118,20 +118,20 @@ public class WorkFlowServiceSearchTest extends TestWithMemoryDB {
 
 		byte[] blob = new byte[0];
 		
-		Method doA = WorkFlowUtil.getMethod(TestWorkFlow.class, "doA");
-		Method doB = WorkFlowUtil.getMethod(TestWorkFlow.class, "doB");
-		Method doC = WorkFlowUtil.getMethod(TestWorkFlow.class, "doC");
+		Method doA = WorkflowUtil.getMethod(TestWorkFlow.class, "doA");
+		Method doB = WorkflowUtil.getMethod(TestWorkFlow.class, "doB");
+		Method doC = WorkflowUtil.getMethod(TestWorkFlow.class, "doC");
 
 		long timestamp = System.currentTimeMillis();
 		TestWorkFlow wf1 = new TestWorkFlow(5, blob);
 		
-		WorkFlowSearch all = new WorkFlowSearch();
+		WorkflowSearch all = new WorkflowSearch();
 		all.setBranchId(branchId);
-		WorkFlowSearchResult before = workFlowService.searchWorkFlows(all, 0, 10);
+		WorkflowSearchResult before = workFlowService.searchWorkFlows(all, 0, 10);
 
-		WorkFlow<TestWorkFlow> w1 = workFlowService.insertWorkFlow(null, null, userId, "requestDomain", branchId, wf1, doA, null, null, null);
+		Workflow<TestWorkFlow> w1 = workFlowService.insertWorkFlow(null, null, userId, "requestDomain", branchId, wf1, doA, null, null, null);
 
-		WorkFlowSearchResult after = workFlowService.searchWorkFlows(all, 0, 10);
+		WorkflowSearchResult after = workFlowService.searchWorkFlows(all, 0, 10);
 		System.out.println("Total workflows="+after.totalWorkflows);
 		assertEquals(1, after.totalWorkflows - before.totalWorkflows);
 		assertEquals(w1.getId(), after.workflows.get(0).getId());
@@ -145,22 +145,22 @@ public class WorkFlowServiceSearchTest extends TestWithMemoryDB {
 
 		byte[] blob = new byte[0];
 		
-		Method doA = WorkFlowUtil.getMethod(TestWorkFlow.class, "doA");
-		Method doB = WorkFlowUtil.getMethod(TestWorkFlow.class, "doB");
-		Method doC = WorkFlowUtil.getMethod(TestWorkFlow.class, "doC");
+		Method doA = WorkflowUtil.getMethod(TestWorkFlow.class, "doA");
+		Method doB = WorkflowUtil.getMethod(TestWorkFlow.class, "doB");
+		Method doC = WorkflowUtil.getMethod(TestWorkFlow.class, "doC");
 
 		TestWorkFlow wf1 = new TestWorkFlow(5, blob);
 		long timestamp = System.currentTimeMillis();
 		Metadata meta1 = createMetadata("A1"+timestamp, "B1"+timestamp, "C1"+timestamp, "D1"+timestamp);
-		WorkFlow<?> w1 = workFlowService.insertWorkFlow(null, null, userId, "requestDomain", branchId, wf1, doA, null, meta1, null);
+		Workflow<?> w1 = workFlowService.insertWorkFlow(null, null, userId, "requestDomain", branchId, wf1, doA, null, meta1, null);
 
-		WorkFlowSearch search = new WorkFlowSearch();
+		WorkflowSearch search = new WorkflowSearch();
 		search.putMetadataProperty("propB", "B1%");
-		WorkFlowSearchResult result = workFlowService.searchWorkFlows(search, 0, 10);
+		WorkflowSearchResult result = workFlowService.searchWorkFlows(search, 0, 10);
 		
 		assertTrue(result.totalWorkflows>0);
 		
-		WorkFlow<?> wf = result.workflows.get(0);
+		Workflow<?> wf = result.workflows.get(0);
 		Metadata meta = workFlowService.loadWorkFlowMetadata(wf); //new MetadataServiceImpl().getMetadata(wf.getId());
 		assertEquals(4, meta.entries().size());
 		List<PropertyType> types = metadataService.getPropertyTypes();
@@ -170,7 +170,7 @@ public class WorkFlowServiceSearchTest extends TestWithMemoryDB {
 		assertEquals(1, meta.getProperties("propD").size());
 		assertEquals(0, meta.getProperties("propE").size());
 		
-		search = new WorkFlowSearch();
+		search = new WorkflowSearch();
 		search.putMetadataProperty("propC", meta.getFirstProperty("propC"));
 		search.putMetadataProperty("propA", meta.getFirstProperty("propA"));
 		search.setBranchId(wf.getBranchId());
@@ -183,16 +183,16 @@ public class WorkFlowServiceSearchTest extends TestWithMemoryDB {
 		assertEquals(wf.getId(), result.workflows.get(0).getId());
 		
 		// Verify that metadata is also loaded when getting workflow by id.
-		WorkFlow<?> wf2 = workFlowService.getWorkFlow(wf.getId());
+		Workflow<?> wf2 = workFlowService.getWorkFlow(wf.getId());
 		assertEquals(workFlowService.loadWorkFlowMetadata(wf).getFirstProperty("propA"), workFlowService.loadWorkFlowMetadata(wf2).getFirstProperty("propA"));
 	}
 	
 	
 	//@Test(expected=IllegalArgumentException.class)
 	public void testSearchWithWrongMetadata() throws ResourceException, IOException {
-			WorkFlowSearch search = new WorkFlowSearch();
+			WorkflowSearch search = new WorkflowSearch();
 			search.putMetadataProperty("propE", "B3xxx");
-			WorkFlowSearchResult result = workFlowService.searchWorkFlows(search, 0, 100);
+			WorkflowSearchResult result = workFlowService.searchWorkFlows(search, 0, 100);
 			assertEquals(0, result.totalWorkflows);
 	}
 
@@ -203,40 +203,40 @@ public class WorkFlowServiceSearchTest extends TestWithMemoryDB {
 
 		byte[] blob = new byte[0];
 		
-		Method doA = WorkFlowUtil.getMethod(TestWorkFlow.class, "doA");
-		Method doB = WorkFlowUtil.getMethod(TestWorkFlow.class, "doB");
-		Method doC = WorkFlowUtil.getMethod(TestWorkFlow.class, "doC");
+		Method doA = WorkflowUtil.getMethod(TestWorkFlow.class, "doA");
+		Method doB = WorkflowUtil.getMethod(TestWorkFlow.class, "doB");
+		Method doC = WorkflowUtil.getMethod(TestWorkFlow.class, "doC");
 
 		long timestamp = System.currentTimeMillis();
 		TestWorkFlow twf = new TestWorkFlow(5, blob);
 		{		
-			WorkFlow<TestWorkFlow> wNoMetadata = workFlowService.insertWorkFlow(null, null, userId, "requestDomain", branchId, twf, doA, null, null, null);
+			Workflow<TestWorkFlow> wNoMetadata = workFlowService.insertWorkFlow(null, null, userId, "requestDomain", branchId, twf, doA, null, null, null);
 	
-			WorkFlowSearch all = new WorkFlowSearch();
-			WorkFlowSearchResult after = workFlowService.searchWorkFlows(all, 0, 10);
+			WorkflowSearch all = new WorkflowSearch();
+			WorkflowSearchResult after = workFlowService.searchWorkFlows(all, 0, 10);
 			assertEquals(wNoMetadata.getId(), after.workflows.get(0).getId());
 			
-			WorkFlow<?> w = after.workflows.get(0);
+			Workflow<?> w = after.workflows.get(0);
 			assertEquals(0, workFlowService.loadWorkFlowMetadata(w).getNamedEntries().size());
 		}
 		{
 			Metadata metadata = new Metadata(null);
 			metadata.putProperty(metadataService.getOrCreatePropertyType("test1", null), "value1");
 			UUID id = UUID.randomUUID();
-			WorkFlow<TestWorkFlow> wOneMetadata = workFlowService.insertWorkFlow(id, null, userId, "requestDomain", branchId, twf, doA, null, metadata, null);
+			Workflow<TestWorkFlow> wOneMetadata = workFlowService.insertWorkFlow(id, null, userId, "requestDomain", branchId, twf, doA, null, metadata, null);
 	
-			WorkFlowSearch all = new WorkFlowSearch();
-			WorkFlowSearchResult after = workFlowService.searchWorkFlows(all, 0, 100);
+			WorkflowSearch all = new WorkflowSearch();
+			WorkflowSearchResult after = workFlowService.searchWorkFlows(all, 0, 100);
 			// TODO 2 workflows inserted and returned in arbitrary order
 //			assertEquals(wOneMetadata.getId(), after.workflows.get(0).getId());
 
 			UUID uid = wOneMetadata.getId();
 			assertTrue(uid.equals(after.workflows.get(0).getId()) || uid.equals(after.workflows.get(1).getId()));
 
-			WorkFlow<?> w = null;
+			Workflow<?> w = null;
 			System.out.println("After: " + after.workflows.size());
 			System.out.println("Looking for: " + id);
-			for (WorkFlow<?> wf : after.workflows) {
+			for (Workflow<?> wf : after.workflows) {
 				System.out.println("UUID: " + wf.getId());
 				if (wf.getId().equals(id)) {
 					w = wf;
@@ -252,13 +252,14 @@ public class WorkFlowServiceSearchTest extends TestWithMemoryDB {
 			metadata.putProperty(metadataService.getOrCreatePropertyType("test1", null), "value1");
 			metadata.putProperty(metadataService.getOrCreatePropertyType("test1", null), "value2");
 			metadata.putProperty(metadataService.getOrCreatePropertyType("test2", null), "value1");
-			WorkFlow<?> wOneMetadata = workFlowService.insertWorkFlow(null, null, userId, "requestDomain", branchId, twf, doA, null, metadata, null);
-	
-			WorkFlowSearch all = new WorkFlowSearch();
-			WorkFlowSearchResult after = workFlowService.searchWorkFlows(all, 0, 10);
-			assertEquals(wOneMetadata.getId(), after.workflows.get(0).getId());
-			
-			WorkFlow<?> w = after.workflows.get(0);
+
+			Workflow<?> wOneMetadata = workFlowService.insertWorkFlow(null, null, userId, "requestDomain", branchId, twf, doA, null, metadata, null);
+
+			WorkflowSearch all = new WorkflowSearch();
+			WorkflowSearchResult after = workFlowService.searchWorkFlows(all, 0, 10);
+			assertTrue(after.workflows.stream().anyMatch(w->w.getId().equals(wOneMetadata.getId())));
+
+			Workflow<?> w = after.workflows.get(0);
 			List<Entry<String,String>> props = workFlowService.loadWorkFlowMetadata(w).getNamedEntries();
 			assertEquals(3, props.size());
 		}

@@ -1,10 +1,10 @@
 package com.nordea.dompap.config;
 
 import com.nordea.dompap.workflow.*;
-import com.nordea.dompap.workflow.event.WorkFlowEventService;
-import com.nordea.dompap.workflow.event.WorkFlowEventServiceImpl;
-import com.nordea.dompap.workflow.selector.WorkFlowSelector;
-import com.nordea.dompap.workflow.selector.WorkFlowSelectorImpl;
+import com.nordea.dompap.workflow.event.WorkflowEventService;
+import com.nordea.dompap.workflow.event.WorkflowEventServiceImpl;
+import com.nordea.dompap.workflow.selector.WorkflowSelector;
+import com.nordea.dompap.workflow.selector.WorkflowSelectorImpl;
 import lombok.Value;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.context.annotation.Bean;
@@ -23,25 +23,25 @@ public class WorkFlowContextSpring {
 
     private WorkFlowDataSourceConfiguration dataSourceConfiguration;
 
-    private WorkFlowLabelService workFlowLabelService;
+    private WorkflowLabelService workFlowLabelService;
     private MetadataService metadataService;
-    private WorkFlowEventService workFlowEventService;
-    private WorkFlowSelector workFlowSelector;
-    private WorkFlowStatusService workFlowStatusService;
-    private WorkFlowService workFlowService;
-    private WorkFlowManager workFlowManager;
+    private WorkflowEventService workFlowEventService;
+    private WorkflowSelector workFlowSelector;
+    private WorkflowStatusService workFlowStatusService;
+    private WorkflowService workFlowService;
+    private WorkflowManager workFlowManager;
 
     public WorkFlowContextSpring(WorkFlowConfigSpring workFlowConfig, WorkFlowDataSourceConfiguration dataSourceConfiguration) {
         this.workFlowConfig = workFlowConfig;
         this.dataSourceConfiguration = dataSourceConfiguration;
 
-        workFlowLabelService = new WorkFlowLabelServiceImpl(getDataSource());
+        workFlowLabelService = new WorkflowLabelServiceImpl(getDataSource());
         metadataService = new MetadataServiceImpl(workFlowConfig, getDataSource());
-        workFlowEventService = new WorkFlowEventServiceImpl(getDataSource());
-        workFlowSelector = new WorkFlowSelectorImpl(workFlowConfig, getDataSource());
-        workFlowStatusService = new WorkFlowStatusServiceImpl(getDataSource());
-        workFlowService = new WorkFlowServiceImpl(workFlowConfig, getDataSource(), metadataService, workFlowSelector, workFlowStatusService);
-        workFlowManager = new WorkFlowManagerImpl(workFlowConfig, workFlowService);
+        workFlowEventService = new WorkflowEventServiceImpl(getDataSource());
+        workFlowSelector = new WorkflowSelectorImpl(workFlowConfig, getDataSource());
+        workFlowStatusService = new WorkflowStatusServiceImpl(getDataSource());
+        workFlowService = new WorkflowServiceImpl(workFlowConfig, getDataSource(), metadataService, workFlowSelector, workFlowStatusService);
+        workFlowManager = new WorkflowManagerImpl(workFlowConfig, workFlowService);
     }
 
     public DataSource getDataSource() {
@@ -49,25 +49,25 @@ public class WorkFlowContextSpring {
     }
 
     @Bean
-    public WorkFlowLabelService getWorkFlowLabelService() { return workFlowLabelService; }
+    public WorkflowLabelService getWorkFlowLabelService() { return workFlowLabelService; }
 
     @Bean
     public MetadataService getMetadataService() { return metadataService; }
 
     @Bean
-    public WorkFlowEventService getWorkFlowEventService() { return workFlowEventService; }
+    public WorkflowEventService getWorkFlowEventService() { return workFlowEventService; }
 
     @Bean
-    public WorkFlowSelector getWorkFlowSelector() { return workFlowSelector; }
+    public WorkflowSelector getWorkFlowSelector() { return workFlowSelector; }
 
     @Bean
-    public WorkFlowStatusService getWorkFlowStatusService() { return workFlowStatusService; }
+    public WorkflowStatusService getWorkFlowStatusService() { return workFlowStatusService; }
 
     @Bean
-    public WorkFlowService getWorkFlowService() { return workFlowService; }
+    public WorkflowService getWorkFlowService() { return workFlowService; }
 
     @Bean
-    public WorkFlowManager getWorkFlowManager() { return workFlowManager; }
+    public WorkflowManager getWorkFlowManager() { return workFlowManager; }
     /*
     @Bean
     @ConfigurationProperties("workflow.datasource")

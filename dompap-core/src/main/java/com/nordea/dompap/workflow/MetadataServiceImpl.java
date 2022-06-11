@@ -3,7 +3,7 @@ package com.nordea.dompap.workflow;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.nordea.dompap.jdbc.JdbcUtil;
-import com.nordea.dompap.workflow.config.WorkFlowConfig;
+import com.nordea.dompap.workflow.config.WorkflowConfig;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
@@ -23,7 +23,7 @@ public class MetadataServiceImpl implements MetadataService {
 	private Map<String, PropertyType> nameTypeMap;
 	private Map<Integer, PropertyType> idTypeMap;
 
-	private final WorkFlowConfig config;
+	private final WorkflowConfig config;
 	private final DataSource dataSource;
 
 	/**

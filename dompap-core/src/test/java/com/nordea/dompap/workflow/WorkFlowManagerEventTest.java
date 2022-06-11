@@ -1,7 +1,7 @@
 package com.nordea.dompap.workflow;
 
-import com.nordea.dompap.workflow.config.WorkFlowConfig;
-import com.nordea.dompap.workflow.event.WorkFlowEventService;
+import com.nordea.dompap.workflow.config.WorkflowConfig;
+import com.nordea.dompap.workflow.event.WorkflowEventService;
 import com.nordea.next.dompap.domain.BranchId;
 import com.nordea.next.dompap.domain.UserId;
 import org.joda.time.DateTime;
@@ -15,26 +15,25 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(classes = com.nordea.dompap.config.WorkFlowContextSpring.class)
 @ActiveProfiles("springtest")
 public class WorkFlowManagerEventTest extends TestWithMemoryDB {
 
 	@Autowired
-	WorkFlowConfig config;
+	WorkflowConfig config;
 
 	@Autowired
-	WorkFlowService service;
+	WorkflowService service;
 
 	@Autowired
-	WorkFlowManager mgr;
+	WorkflowManager mgr;
 
 	@Autowired
-	WorkFlowEventService workFlowEventService;
+	WorkflowEventService workFlowEventService;
 
-	DefaultWorkFlowController wfController = new DefaultWorkFlowController(config, mgr);
+	DefaultWorkflowController wfController = new DefaultWorkflowController(config, mgr);
 
 	/**
 	 * TestWorkflow2 that sends an event to itself and schedules stepC for execution after 30 days, but expect the event to execute instead. 
@@ -48,10 +47,10 @@ public class WorkFlowManagerEventTest extends TestWithMemoryDB {
 		DateTime now = DateTime.now();
 		
 		String subType = null;
-		WorkFlow<?> workflow = service.insertWorkFlow(id, "TEST1", new UserId("X00000"), "NO", new BranchId("1111"), myworkflow, subType, TestWorkflow2.stepA.method, new Date(), null, wfController);
+		Workflow<?> workflow = service.insertWorkFlow(id, "TEST1", new UserId("X00000"), "NO", new BranchId("1111"), myworkflow, subType, TestWorkflow2.stepA.method, new Date(), null, wfController);
 		
-		WorkFlowSearch search = new WorkFlowSearch();
-		WorkFlowSearchResult result = service.searchWorkFlows(search, 0, 100, false);
+		WorkflowSearch search = new WorkflowSearch();
+		WorkflowSearchResult result = service.searchWorkFlows(search, 0, 100, false);
 		assertEquals(1, result.totalWorkflows);
 		
 //		WorkFlowSelector selector = new WorkFlowSelector();
@@ -60,12 +59,12 @@ public class WorkFlowManagerEventTest extends TestWithMemoryDB {
 //		WorkFlow<?> selected = selector.pickReadyWorkFlow(TestWorkflow2.class.getName());
 //		Assert.assertEquals(id, selected.getId());
 
-		mgr.pickAndExecute(TestWorkflow2.class.getName(), null);
+		mgr.pickAndExecute(TestWorkflow2.class.getName(), null, null);
 		
-		WorkFlow<?> updated = service.getWorkFlow(id);
+		Workflow<?> updated = service.getWorkFlow(id);
 		assertEquals(0, updated.getEventsQueued());
 		assertEquals("stepC", updated.getMethodName());
-		assertTrue(now.plusDays(30).isBefore(new DateTime(updated.getStartWhen())));
+		assertFalse(now.plusDays(30).isAfter(new DateTime(updated.getStartWhen())));
 
 		UUID eventId = UUID.randomUUID();
 		workFlowEventService.createEvent(eventId, "test".getBytes(), "test", id, "test");
@@ -73,8 +72,8 @@ public class WorkFlowManagerEventTest extends TestWithMemoryDB {
 		
 		// Third time workflow is ready with pending event.
 //		WorkFlow<?> selected4 = selector.pickReadyWorkFlow(TestWorkflow2.class.getName(), null);
-		mgr.pickAndExecute(TestWorkflow2.class.getName(), null);
-		WorkFlow<TestWorkflow2> selected4 = mgr.getWorkFlow(id);
+		mgr.pickAndExecute(TestWorkflow2.class.getName(), null, null);
+		Workflow<TestWorkflow2> selected4 = mgr.getWorkFlow(id);
 		assertEquals(id, selected4.getId());
 		assertEquals("onEvent", selected4.getMethodName());
 		assertEquals("Some.onEvent invoked", selected4.getContent().some);

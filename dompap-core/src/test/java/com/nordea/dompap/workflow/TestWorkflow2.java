@@ -8,9 +8,7 @@ import javax.resource.ResourceException;
 
 import org.joda.time.DateTime;
 
-import com.nordea.dompap.workflow.event.WorkFlowEventService;
-
-import static com.nordea.dompap.workflow.WorkFlowUtil.*;
+import static com.nordea.dompap.workflow.WorkflowUtil.*;
 
 /**
  * TestWorkflow2 that sends an event to itself and schedules stepC for execution after 30 days, but expect the event to execute instead. 
@@ -26,7 +24,7 @@ public class TestWorkflow2 implements Serializable {
 	}
 
 	private static final WhenMethod stepB = getWhenMethod(TestWorkflow2.class, "stepB", null);
-	public WhenMethod stepB(WorkFlow workflow) throws ResourceException  {
+	public WhenMethod stepB(Workflow workflow) throws ResourceException  {
 		// Send an event and schedule execution of stepC - event should get executed
 //		WorkFlow<?> workflow = ServiceFactory.getService(WorkFlowService.class).getWorkFlow(id);
 

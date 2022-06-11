@@ -1,6 +1,6 @@
 package com.nordea.dompap.workflow;
 
-import com.nordea.dompap.workflow.content.GsonWorkFlowContentSerializer;
+import com.nordea.dompap.workflow.content.GsonWorkflowContentSerializer;
 import org.junit.jupiter.api.Test;
 
 import java.io.UnsupportedEncodingException;
@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class GSonSerializeDecodingTest {
 
-	private static class MySerializer extends GsonWorkFlowContentSerializer {
+	private static class MySerializer extends GsonWorkflowContentSerializer {
 		@Override
 		public String decodeBytes(byte[] bytes) {
 			return super.decodeBytes(bytes);

@@ -1,8 +1,8 @@
 package com.nordea.dompap.spring;
 
 import com.nordea.dompap.config.WorkFlowContextSpring;
-import com.nordea.dompap.workflow.WorkFlowManager;
-import com.nordea.dompap.workflow.config.WorkFlowConfig;
+import com.nordea.dompap.workflow.WorkflowManager;
+import com.nordea.dompap.workflow.config.WorkflowConfig;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,7 +24,7 @@ public class WorkFlowContextSpringTest {
     private WorkFlowContextSpring workFlowContext;
 
     @Autowired
-    private WorkFlowManager workFlowManager;
+    private WorkflowManager workFlowManager;
 /*
     @Test
     public void givenInScopeComponents_whenSearchingInApplicationContext_thenFindThem() throws SQLException {
@@ -55,7 +55,7 @@ public class WorkFlowContextSpringTest {
 
     @Test
     public void testWorkFlowConfig() {
-        WorkFlowConfig config = workFlowContext.getWorkFlowConfig();
+        WorkflowConfig config = workFlowContext.getWorkFlowConfig();
         assertEquals("application_springtest", config.getSchedule());
 
         assertTrue(Arrays.asList(config.getJobs()).contains("job2"));

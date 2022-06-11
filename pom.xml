@@ -23,8 +23,9 @@
 	<modules>
   		<module>dompap-domain</module>
   		<module>dompap-common</module>
-  		<module>dompap-core</module>
-		<module>dompap-core-testutils</module>
+        <module>dompap-jdbc</module>
+        <module>dompap-core</module>
+        <module>dompap-core-testutils</module>
         <!-- Bill-of-material where all version are managed -->
         <module>dompap-bom</module>
         <!--<module>dompap-workflow-next</module>-->
@@ -33,7 +34,7 @@
         <module>dompap-workflow-parent</module>
         <!-- Parent project for REST services projects without workflows -->
         <module>dompap-rest-service-parent</module>
-        <module>dompap-jdbc</module>
+        <module>dompap-perftest</module>
 	</modules>
 	
 	<build>

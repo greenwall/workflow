@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class WorkFlowBuilderTest extends TestWithMemoryDB {
 
 	@Autowired
-	WorkFlowManager workFlowManager;
+	WorkflowManager workFlowManager;
 
 	@Test
 	public void testString() throws IOException, ResourceException, ClassNotFoundException {
@@ -27,7 +27,7 @@ public class WorkFlowBuilderTest extends TestWithMemoryDB {
 		UUID id = UUID.randomUUID();
 		String content = getJsonRequest();      
 		
-        WorkFlowBuilder<String> builder = new WorkFlowBuilder<String>()
+        WorkflowBuilder<String> builder = new WorkflowBuilder<String>()
         		.id(id)
 //        		.userId(new UserId("G97435"))
 //        		.branchId(new BranchId("0000"))
@@ -35,11 +35,11 @@ public class WorkFlowBuilderTest extends TestWithMemoryDB {
         		.workflow(content)
         		.methodName("start");
 		
-		WorkFlow<String> wf = workFlowManager.create(builder);
+		Workflow<String> wf = workFlowManager.create(builder);
 		
 		assertEquals(id, wf.getId(), "Workflow ID should not change");
 		
-		WorkFlow<Object> wf2 = workFlowManager.getWorkFlow(wf.getId());
+		Workflow<Object> wf2 = workFlowManager.getWorkFlow(wf.getId());
 
 		assertNotNull(wf2);
 		assertEquals(wf.getId(), wf2.getId());
@@ -51,16 +51,16 @@ public class WorkFlowBuilderTest extends TestWithMemoryDB {
 
 		String content = getJsonRequest();
 
-		WorkFlowBuilder<String> builder1 = new WorkFlowBuilder<String>()
+		WorkflowBuilder<String> builder1 = new WorkflowBuilder<String>()
 				.id(UUID.randomUUID())
 				.externalKey("this-is-unique")
 				.workflowClassName("com.acme.SomeUnknownClass")
 				.workflow(content)
 				.methodName("irrelevant");
 
-		WorkFlow<String> wf1 = workFlowManager.create(builder1);
+		Workflow<String> wf1 = workFlowManager.create(builder1);
 
-		WorkFlowBuilder<String> builder2 = new WorkFlowBuilder<String>()
+		WorkflowBuilder<String> builder2 = new WorkflowBuilder<String>()
 				.id(UUID.randomUUID())
 				.externalKey("this-is-unique")
 				.workflowClassName("com.acme.SomeUnknownClass")
@@ -68,7 +68,7 @@ public class WorkFlowBuilderTest extends TestWithMemoryDB {
 				.methodName("irrelevant");
 
 		assertThrows(ResourceException.class, () -> {
-			WorkFlow<String> wf2 = workFlowManager.create(builder2);
+			Workflow<String> wf2 = workFlowManager.create(builder2);
 		});
 
 	}
@@ -78,23 +78,23 @@ public class WorkFlowBuilderTest extends TestWithMemoryDB {
 
 		String content = getJsonRequest();
 
-		WorkFlowBuilder<String> builder1 = new WorkFlowBuilder<String>()
+		WorkflowBuilder<String> builder1 = new WorkflowBuilder<String>()
 				.id(UUID.randomUUID())
 				.externalKey(null)
 				.workflowClassName("com.acme.SomeUnknownClass")
 				.workflow(content)
 				.methodName("irrelevant");
 
-		WorkFlow<String> wf1 = workFlowManager.create(builder1);
+		Workflow<String> wf1 = workFlowManager.create(builder1);
 
-		WorkFlowBuilder<String> builder2 = new WorkFlowBuilder<String>()
+		WorkflowBuilder<String> builder2 = new WorkflowBuilder<String>()
 				.id(UUID.randomUUID())
 				.externalKey(null)
 				.workflowClassName("com.acme.SomeUnknownClass")
 				.workflow(content)
 				.methodName("irrelevant");
 
-		WorkFlow<String> wf2 = workFlowManager.create(builder2);
+		Workflow<String> wf2 = workFlowManager.create(builder2);
 
 		assertNotEquals(wf1.getId(), wf2.getId());
 	}

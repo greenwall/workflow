@@ -1,9 +1,9 @@
 package com.nordea.dompap.workflow;
 
-import com.nordea.dompap.workflow.config.WorkFlowConfig;
-import com.nordea.dompap.workflow.event.WorkFlowEventService;
+import com.nordea.dompap.workflow.config.WorkflowConfig;
+import com.nordea.dompap.workflow.event.WorkflowEventService;
 import com.nordea.dompap.workflow.selector.ExecutorInfo;
-import com.nordea.dompap.workflow.selector.WorkFlowSelector;
+import com.nordea.dompap.workflow.selector.WorkflowSelector;
 import com.nordea.next.dompap.domain.BranchId;
 import com.nordea.next.dompap.domain.UserId;
 import org.junit.jupiter.api.Test;
@@ -25,19 +25,19 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 public class WorkFlowSelectorTest extends TestWithMemoryDB {
 
 	@Autowired
-	private WorkFlowConfig config;
+	private WorkflowConfig config;
 
 	@Autowired
-	private WorkFlowService workFlowService;
+	private WorkflowService workFlowService;
 
 	@Autowired
-	private WorkFlowManager workFlowManager;
+	private WorkflowManager workFlowManager;
 
 	@Autowired
-	private WorkFlowSelector selector;
+	private WorkflowSelector selector;
 
 	@Autowired
-	private WorkFlowEventService eventService;
+	private WorkflowEventService eventService;
 
 	@Autowired
 	private MetadataService metadataService;
@@ -54,15 +54,15 @@ public class WorkFlowSelectorTest extends TestWithMemoryDB {
 		UUID id = UUID.randomUUID();
 		Metadata wfMetadata = new Metadata(null);
 		wfMetadata.putProperty(new PropertyType("PROPERTY", null), "VALUE");
-		DefaultWorkFlowController wfController = new DefaultWorkFlowController(config, workFlowManager);
-		workFlowService.insertWorkFlow(id, "TEST1", new UserId("X00000"), "requestDomain", new BranchId("1111"), wf, WorkFlowUtil.getMethod(MyWorkflow.class, "doStuff"), new Date(), wfMetadata , wfController);
+		DefaultWorkflowController wfController = new DefaultWorkflowController(config, workFlowManager);
+		workFlowService.insertWorkFlow(id, "TEST1", new UserId("X00000"), "requestDomain", new BranchId("1111"), wf, WorkflowUtil.getMethod(MyWorkflow.class, "doStuff"), new Date(), wfMetadata , wfController);
 		
 		
-		WorkFlowSearch search = new WorkFlowSearch();
-		WorkFlowSearchResult result = workFlowService.searchWorkFlows(search, 0, 100);
+		WorkflowSearch search = new WorkflowSearch();
+		WorkflowSearchResult result = workFlowService.searchWorkFlows(search, 0, 100);
 		assertEquals(1, result.totalWorkflows);
 				
-		WorkFlow<?> selected = selector.pickReadyWorkFlow(MyWorkflow.class.getName(), null, executorInto);
+		Workflow<?> selected = selector.pickReadyWorkFlow(MyWorkflow.class.getName(), null, executorInto);
 		assertEquals(id, selected.getId());
 		
 	}
@@ -73,17 +73,17 @@ public class WorkFlowSelectorTest extends TestWithMemoryDB {
 
 		UUID id = UUID.randomUUID();
 		Metadata wfMetadata = new Metadata(null);
-		DefaultWorkFlowController wfController = new DefaultWorkFlowController(config, workFlowManager);
-		Method doStuff = WorkFlowUtil.getMethod(MyWorkflow.class, "doStuff");
+		DefaultWorkflowController wfController = new DefaultWorkflowController(config, workFlowManager);
+		Method doStuff = WorkflowUtil.getMethod(MyWorkflow.class, "doStuff");
 		String subType = null;
-		WorkFlow<MyWorkflow> workflow = workFlowService.insertWorkFlow(id, "TEST1", new UserId("X00000"), "requestDomain", new BranchId("1111"), myworkflow, subType, doStuff, new Date(), wfMetadata , wfController);
+		Workflow<MyWorkflow> workflow = workFlowService.insertWorkFlow(id, "TEST1", new UserId("X00000"), "requestDomain", new BranchId("1111"), myworkflow, subType, doStuff, new Date(), wfMetadata , wfController);
 		
-		WorkFlowSearch search = new WorkFlowSearch();
-		WorkFlowSearchResult result = workFlowService.searchWorkFlows(search, 0, 100);
+		WorkflowSearch search = new WorkflowSearch();
+		WorkflowSearchResult result = workFlowService.searchWorkFlows(search, 0, 100);
 		assertEquals(1, result.totalWorkflows);
 		
 		// First time workflow is ready 
-		WorkFlow<?> selected = selector.pickReadyWorkFlow(myworkflow.getClass().getName(), null, executorInto);
+		Workflow<?> selected = selector.pickReadyWorkFlow(myworkflow.getClass().getName(), null, executorInto);
 		assertEquals(id, selected.getId());
 
 		// When workflow updated to NOT allow events it will not be selected
@@ -91,7 +91,7 @@ public class WorkFlowSelectorTest extends TestWithMemoryDB {
 		workFlowService.updateWorkFlow(selected, (String)null, null, new Date(), new Date(), null, wfMetadata, false);
 		
 		// Second time workflow is not ready 
-		WorkFlow<?> selected2 = selector.pickReadyWorkFlow(myworkflow.getClass().getName(), null, executorInto);
+		Workflow<?> selected2 = selector.pickReadyWorkFlow(myworkflow.getClass().getName(), null, executorInto);
 		assertNull(selected2);
 		
 		UUID eventId = UUID.randomUUID();
@@ -99,18 +99,18 @@ public class WorkFlowSelectorTest extends TestWithMemoryDB {
 		
 		workFlowService.queueEvent(workflow, eventId);
 		
-		WorkFlow<?> updated = workFlowService.getWorkFlow(id);
+		Workflow<?> updated = workFlowService.getWorkFlow(id);
 		assertEquals(1, updated.getEventsQueued());
 		
 		// Third time workflow is not ready with pending event because it has PROCESS_EVENTS==false.
-		WorkFlow<?> selected3 = selector.pickReadyWorkFlow(MyWorkflow.class.getName(), null, executorInto);
+		Workflow<?> selected3 = selector.pickReadyWorkFlow(MyWorkflow.class.getName(), null, executorInto);
 		assertNull(selected3);
 
 //		Method method = WorkFlowUtil.getMethod(wf, "doStuff");
 		workFlowService.updateWorkFlow(selected, (String)null, null, new Date(), new Date(), null, wfMetadata, true);
 		
 		// Third time workflow is ready with pending event.
-		WorkFlow<?> selected4 = selector.pickReadyWorkFlow(myworkflow.getClass().getName(), null, executorInto);
+		Workflow<?> selected4 = selector.pickReadyWorkFlow(myworkflow.getClass().getName(), null, executorInto);
 		assertEquals(id, selected4.getId());
 		assertEquals(eventId, selected4.getCurrentEventId());
 		assertEquals("onEvent", selected4.getMethodName());
@@ -123,15 +123,15 @@ public class WorkFlowSelectorTest extends TestWithMemoryDB {
 
 		UUID id = UUID.randomUUID();
 		Metadata wfMetadata = new Metadata(null);
-		DefaultWorkFlowController wfController = new DefaultWorkFlowController(config, workFlowManager);
-		workFlowService.insertWorkFlow(id, "TEST1", new UserId("X00000"), "requestDomain", new BranchId("1111"), myworkflow, "subtype", WorkFlowUtil.getMethod(MyWorkflow.class, "doStuff"), new Date(), wfMetadata , wfController);
+		DefaultWorkflowController wfController = new DefaultWorkflowController(config, workFlowManager);
+		workFlowService.insertWorkFlow(id, "TEST1", new UserId("X00000"), "requestDomain", new BranchId("1111"), myworkflow, "subtype", WorkflowUtil.getMethod(MyWorkflow.class, "doStuff"), new Date(), wfMetadata , wfController);
 				
 		// Select workflow with other subtype 
-		WorkFlow<?> selected = selector.pickReadyWorkFlow(myworkflow.getClass().getName(), "other", executorInto);
+		Workflow<?> selected = selector.pickReadyWorkFlow(myworkflow.getClass().getName(), "other", executorInto);
 		assertNull(selected);
 
 		// Select workflow with any subtype 
-		WorkFlow<?> selectedAny = selector.pickReadyWorkFlow(myworkflow.getClass().getName(), null, executorInto);
+		Workflow<?> selectedAny = selector.pickReadyWorkFlow(myworkflow.getClass().getName(), null, executorInto);
 		assertEquals(id, selectedAny.getId());
 	}	
 	
@@ -141,15 +141,15 @@ public class WorkFlowSelectorTest extends TestWithMemoryDB {
 
 		UUID id = UUID.randomUUID();
 		Metadata wfMetadata = new Metadata(null);
-		DefaultWorkFlowController wfController = new DefaultWorkFlowController(config, workFlowManager);
-		workFlowService.insertWorkFlow(id, "TEST1", new UserId("X00000"), "requestDomain", new BranchId("1111"), myworkflow, "subtype", WorkFlowUtil.getMethod(MyWorkflow.class, "doStuff"), new Date(), wfMetadata , wfController);
+		DefaultWorkflowController wfController = new DefaultWorkflowController(config, workFlowManager);
+		workFlowService.insertWorkFlow(id, "TEST1", new UserId("X00000"), "requestDomain", new BranchId("1111"), myworkflow, "subtype", WorkflowUtil.getMethod(MyWorkflow.class, "doStuff"), new Date(), wfMetadata , wfController);
 		
 		// Select workflow with other subtype 
-		WorkFlow<?> selected = selector.pickReadyWorkFlow(myworkflow.getClass().getName(), "other", executorInto);
+		Workflow<?> selected = selector.pickReadyWorkFlow(myworkflow.getClass().getName(), "other", executorInto);
 		assertNull(selected);
 
 		// Select workflow with any subtype 
-		WorkFlow<?> selectedSubType = selector.pickReadyWorkFlow(myworkflow.getClass().getName(), "subtype", executorInto);
+		Workflow<?> selectedSubType = selector.pickReadyWorkFlow(myworkflow.getClass().getName(), "subtype", executorInto);
 		assertEquals(id, selectedSubType.getId());
 		
 	}	
@@ -160,32 +160,32 @@ public class WorkFlowSelectorTest extends TestWithMemoryDB {
 
 		UUID id = UUID.randomUUID();
 		Metadata wfMetadata = new Metadata(null);
-		DefaultWorkFlowController wfController = new DefaultWorkFlowController(config, workFlowManager);
-		workFlowService.insertWorkFlow(id, "TEST1", new UserId("X00000"), "requestDomain", new BranchId("1111"), myworkflow, "mysubtype", WorkFlowUtil.getMethod(MyWorkflow.class, "doStuff"), new Date(), wfMetadata , wfController);
+		DefaultWorkflowController wfController = new DefaultWorkflowController(config, workFlowManager);
+		workFlowService.insertWorkFlow(id, "TEST1", new UserId("X00000"), "requestDomain", new BranchId("1111"), myworkflow, "mysubtype", WorkflowUtil.getMethod(MyWorkflow.class, "doStuff"), new Date(), wfMetadata , wfController);
 		
 		{
 			// Select workflow with other subtype 
-			WorkFlow<?> selected = selector.pickReadyWorkFlow(myworkflow.getClass().getName(), "", executorInto);
+			Workflow<?> selected = selector.pickReadyWorkFlow(myworkflow.getClass().getName(), "", executorInto);
 			assertNull(selected);
 	
 			// Select workflow with any subtype 
-			WorkFlow<?> selectedAny = selector.pickReadyWorkFlow(myworkflow.getClass().getName(), null, executorInto);
+			Workflow<?> selectedAny = selector.pickReadyWorkFlow(myworkflow.getClass().getName(), null, executorInto);
 			assertEquals(id, selectedAny.getId());
 		}
 		
 		UUID id2 = UUID.randomUUID();
-		workFlowService.insertWorkFlow(id2, "TEST2", new UserId("X00000"), "requestDomain", new BranchId("1111"), myworkflow, null, WorkFlowUtil.getMethod(MyWorkflow.class, "doStuff"), new Date(), wfMetadata , wfController);
+		workFlowService.insertWorkFlow(id2, "TEST2", new UserId("X00000"), "requestDomain", new BranchId("1111"), myworkflow, null, WorkflowUtil.getMethod(MyWorkflow.class, "doStuff"), new Date(), wfMetadata , wfController);
 		{
 			// Select workflow with other subtype 
-			WorkFlow<?> selected = selector.pickReadyWorkFlow(myworkflow.getClass().getName(), "", executorInto);
+			Workflow<?> selected = selector.pickReadyWorkFlow(myworkflow.getClass().getName(), "", executorInto);
 			assertEquals(id2, selected.getId());
 		}
 
 		UUID id3 = UUID.randomUUID();
-		workFlowService.insertWorkFlow(id3, "TEST3", new UserId("X00000"), "requestDomain", new BranchId("1111"), myworkflow, null, WorkFlowUtil.getMethod(MyWorkflow.class, "doStuff"), new Date(), wfMetadata , wfController);
+		workFlowService.insertWorkFlow(id3, "TEST3", new UserId("X00000"), "requestDomain", new BranchId("1111"), myworkflow, null, WorkflowUtil.getMethod(MyWorkflow.class, "doStuff"), new Date(), wfMetadata , wfController);
 		{
 			// Select workflow with other subtype 
-			WorkFlow<?> selected = selector.pickReadyWorkFlow(myworkflow.getClass().getName(), null, executorInto);
+			Workflow<?> selected = selector.pickReadyWorkFlow(myworkflow.getClass().getName(), null, executorInto);
 			assertEquals(id3, selected.getId());
 		}
 		
@@ -197,16 +197,16 @@ public class WorkFlowSelectorTest extends TestWithMemoryDB {
 
 		UUID id = UUID.randomUUID();
 		Metadata wfMetadata = new Metadata(null);
-		DefaultWorkFlowController wfController = new DefaultWorkFlowController(config, workFlowManager);
-		workFlowService.insertWorkFlow(id, "TEST1", new UserId("X00000"), "requestDomain", new BranchId("1111"), myworkflow, "mysubtype", WorkFlowUtil.getMethod(MyWorkflow.class, "doStuff"), new Date(), wfMetadata , wfController);
+		DefaultWorkflowController wfController = new DefaultWorkflowController(config, workFlowManager);
+		workFlowService.insertWorkFlow(id, "TEST1", new UserId("X00000"), "requestDomain", new BranchId("1111"), myworkflow, "mysubtype", WorkflowUtil.getMethod(MyWorkflow.class, "doStuff"), new Date(), wfMetadata , wfController);
 		
 		{
 			// Select workflow with other subtype 
-			WorkFlow<?> selected = selector.pickReadyWorkFlow(myworkflow.getClass().getName(), "", executorInto);
+			Workflow<?> selected = selector.pickReadyWorkFlow(myworkflow.getClass().getName(), "", executorInto);
 			assertNull(selected);
 	
 			// Select workflow with any subtype 
-			WorkFlow<?> selectedAny = selector.pickReadyWorkFlow(myworkflow.getClass().getName(), "%", executorInto);
+			Workflow<?> selectedAny = selector.pickReadyWorkFlow(myworkflow.getClass().getName(), "%", executorInto);
 			assertEquals(id, selectedAny.getId());
 		}
 	}	

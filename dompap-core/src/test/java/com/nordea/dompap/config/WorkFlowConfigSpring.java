@@ -1,13 +1,10 @@
 package com.nordea.dompap.config;
 
-import com.nordea.dompap.workflow.config.WorkFlowConfig;
+import com.nordea.dompap.workflow.config.WorkflowConfig;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
-import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.context.annotation.Configuration;
 
 import java.lang.reflect.Method;
@@ -18,7 +15,7 @@ import java.util.Map;
 @Configuration
 @ConfigurationProperties(prefix = "workflow")
 @Slf4j
-public class WorkFlowConfigSpring implements WorkFlowConfig {
+public class WorkFlowConfigSpring implements WorkflowConfig {
 
     private String schedule;
     private Map<String, String> controllerFor = new HashMap<>();
